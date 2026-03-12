@@ -3,238 +3,121 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-  <title>Amor e Salgados</title>
+  <title>Super Salgados</title>
   <style>
     body{margin:0;font-family:Arial,sans-serif;background:#fff8e1;color:#333;padding-bottom:60px;}
     header{padding:1px;background:#da9328;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-    .logo{font-size:20px;font-weight:bold;text-align:center;background:linear-gradient(to left,#ff0000,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.logo {
-  font-size: 50px;   /* aumentei bastante o tamanho */
-  font-weight: bold;
-  text-align: center;
-  background: linear-gradient(to left, #ff0000, #ff69b4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+    .logo{font-size:40px;font-weight:bold;text-align:center;background:linear-gradient(to left,#ff0000,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-
-
-    
-    .btn{padding:10px 15px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;}
+    .btn{padding:6px 10px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;font-size:12px;transition:transform 0.1s ease;}
+    .btn:active{transform:scale(0.95);} 
     .btn.primary{background:#4caf50;color:#fff;}
     .btn.secondary{background:#f57c00;color:#fff;}
     .btn.danger{background:#ff5c5c;color:#fff;}
+
+    .destaques{display:flex;gap:10px;padding:10px;position:sticky;top:0;background:#fff8e1;z-index:10;transition:opacity 0.3s ease;}
+    .destaque-item{flex:1;background:#fff;border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    .destaque-item img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
+    .destaque-item h3{font-size:14px;margin:5px 0;}
+    .destaque-item .price{font-size:14px;color:#e53935;font-weight:bold;}
+
     .categories{display:flex;gap:10px;padding:10px;}
     .categories button{flex:1;}
+
     .product-list{padding:10px;}
     .card-item{display:flex;align-items:center;background:#fff;border-radius:10px;padding:15px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-    .card-item img{width:100px;height:100px;object-fit:cover;border-radius:8px;margin-right:15px;}
-    .card-info h3{font-size:18px;margin:0;}
-    .card-info p{font-size:14px;color:#666;margin:5px 0;}
-    .card-info .price{font-size:20px;color:#e53935;font-weight:bold;margin:10px 0;}
+    .card-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-right:15px;}
+
     #pageCarrinho{display:none;padding:20px;}
-    .cart-item{border-bottom:1px solid #ddd;padding:10px 0;}
-    .cart-item strong{display:block;}
-    .cart-item p{margin:2px 0;color:#666;font-size:13px;}
-    #bottomBar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;box-shadow:0 -2px 6px rgba(0,0,0,0.1);}
-    #bottomTotal{font-size:18px;font-weight:bold;color:#44403f;}
+    .cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fff;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+    .cart-item img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
+
+    .molhos{display:flex;gap:8px;margin:10px 0;}
+    .molho-card{flex:1;background:#fff;border-radius:8px;padding:4px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+    .molho-card img{width:100%;height:45px;object-fit:cover;border-radius:6px;}
+    .molho-card strong{font-size:13px;}
+    .molho-card p{font-size:12px;margin:4px 0;}
+    .molho-card div{font-size:12px;}
+    .molho-card button{font-size:12px;padding:4px 6px;}
+
+    #bottomBar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;}
+    #bottomTotal{font-size:16px;font-weight:bold;color:#44403f;}
+
+    #modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;}
+    .modal-content{background:#fff;padding:15px;border-radius:10px;width:300px;text-align:center;}
+    .modal-content input, .modal-content select{width:100%;padding:6px;margin:4px 0;border:1px solid #ccc;border-radius:5px;font-size:13px;}
+    .cupom{background:#f9f9f9;border:1px dashed #aaa;padding:10px;margin:10px 0;text-align:left;font-size:13px;}
+    .cupom h4{margin:0 0 8px 0;text-align:center;}
   </style>
 </head>
 <body>
-  
+
+
+
 <header>
   <h1 class="logo">Super Salgados</h1>
 </header>
 
-  <div class="categories">
-    <button class="btn secondary" onclick="filtrarCategoria('combos')">Combos</button>
-    <button class="btn secondary" onclick="filtrarCategoria('bebidas')">Refrigerantes</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="destaques" id="destaques">
+  <div class="destaque-item">
+    <img src="img/fotos/coxinha.jpg" alt="Combo 25 Coxinhas">
+    <h3>Combo 25 Coxinhas</h3>
+    <div class="price">R$ 27,30</div>
+    <button class="btn primary" onclick="addToCart('c1')">Adicionar</button>
   </div>
-
-  <div id="pageProdutos" class="product-list"></div>
-
-  <div id="pageCarrinho">
-    <button class="btn secondary" onclick="voltarProdutos()">← Voltar</button>
-    <h2>🛒 Seu Carrinho</h2>
-    <div id="cart"></div>
-    <div id="resumo"></div>
-    <div style="margin-top:10px;">
-      <input type="text" id="bairro" placeholder="Bairro"><br>
-      <input type="text" id="rua" placeholder="Rua"><br>
-      <input type="text" id="numero" placeholder="Número"><br>
-      <button class="btn primary" onclick="enviarPedido()">Finalizar Pedido</button>
-    </div>
+  <div class="destaque-item">
+    <img src="img/fotos/coxinha.jpg" alt="Combo 25 Kibes">
+    <h3>Combo 25 Kibes</h3>
+    <div class="price">R$ 27,30</div>
+    <button class="btn primary" onclick="addToCart('c2')">Adicionar</button>
   </div>
-
-  <div id="bottomBar">
-    <span id="bottomTotal">Total: R$ 0,00</span>
-    <button class="btn primary" onclick="abrirCarrinho()">Ver sacola</button>
+  <div class="destaque-item">
+    <img src="img/fotos/coxinha.jpg" alt="Combo 25 Risoles">
+    <h3>Combo 25 Risoles</h3>
+    <div class="price">R$ 27,30</div>
+    <button class="btn primary" onclick="addToCart('c3')">Adicionar</button>
   </div>
-
-  <script>
-    const TAXA = 4.00;
-    const PRODUCTS = {
-      combos: [
-
-  { id:'c1', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/fotos/coxinha.jpg' },
-  { id:'c2', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/fotos/coxinha.jpg' },
-  { id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/fotos/risole.jpg' },
-  { id:'c4', title:'Combo 25 Bolinhas', price:27.30, desc:'25 bolinhas de queijo + refri lata', img:'img/fotos/bolinha.jpg' },
-  { id:'c5', title:'Combo 25 Mix', price:27.30, desc:'Mix 25 unidades variadas + refri lata', img:'img/fotos/misto.jpg' },
-
-  { id:'c6', title:'Combo 40 Festa', price:37.20, desc:'40 unidades variadas + 10 churros + refri 2L', img:'img/fotos/festa.jpg' },
-  { id:'c7', title:'Combo 40 Coxinha Lovers', price:37.20, desc:'25 coxinhas + 15 churros + refri 2L', img:'img/fotos/coxinha.jpg' },
-  { id:'c8', title:'Combo 40 Risoles & Bolinhas', price:37.20, desc:'15 risoles + 15 bolinhas + 10 churros + refri 2L', img:'img/fotos/risole.jpg' },
-  { id:'c9', title:'Combo 40 Kibe Mix', price:37.20, desc:'20 kibes + 10 risoles + 10 churros + refri 2L', img:'img/fotos/kibe.jpg' },
-  { id:'c10', title:'Combo 40 Variado', price:37.20, desc:'10 de cada + 10 churros + refri 2L', img:'img/fotos/misto.jpg' },
-
-  { id:'c11', title:'Combo 60 Festa', price:48.50, desc:'60 unidades variadas + churros + refri 2L', img:'img/fotos/festa.jpg' },
-  { id:'c12', title:'Combo 60 Coxinha Lovers', price:48.50, desc:'40 coxinhas + 20 churros + refri 2L', img:'img/fotos/coxinha.jpg' },
-  { id:'c13', title:'Combo 60 Risoles & Bolinhas', price:48.50, desc:'30 bolinhas + 20 risoles + 10 churros + refri 2L', img:'img/fotos/risole.jpg' },
-  { id:'c14', title:'Combo 60 Kibe Mix', price:48.50, desc:'20 kibes + 20 risoles + 20 churros + refri 2L', img:'img/fotos/kibe.jpg' },
-  { id:'c15', title:'Combo 60 Variado', price:48.50, desc:'15 de cada + 15 churros + refri 2L', img:'img/fotos/misto.jpg' },
-
-  { id:'c16', title:'Combo 100 Festa', price:71.20, desc:'100 unidades variadas + churros + refri 2L', img:'img/fotos/festa.jpg' },
-  { id:'c17', title:'Combo 100 Coxinha Lovers', price:71.20, desc:'60 coxinhas + 40 churros + refri 2L', img:'img/fotos/coxinha.jpg' },
-  { id:'c18', title:'Combo 100 Risoles & Bolinhas', price:71.20, desc:'30 bolinhas + 30 coxinhas + 20 risoles + 20 churros + refri 2L', img:'img/fotos/risole.jpg' },
-  { id:'c19', title:'Combo 100 Kibe Mix', price:71.20, desc:'40 kibes + 20 risoles + 20 churros + refri 2L', img:'img/fotos/kibe.jpg' },
-  { id:'c20', title:'Combo 100 Variado', price:71.20, desc:'25 de cada + 25 churros + refri 2L', img:'img/fotos/misto.jpg' },
-
-  { id:'c21', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/fotos/risole.jpg' },
-  { id:'c22', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/fotos/kibe.jpg' },
-  { id:'c23', title:'Combo 25 Mix Light', price:27.30, desc:'10 coxinhas + 10 bolinhas + 5 risoles + refri lata', img:'img/fotos/misto.jpg' },
-  { id:'c24', title:'Combo 40 Risoles Lovers', price:37.20, desc:'40 risoles + 10 churros + refri 2L', img:'img/fotos/risole.jpg' },
-  { id:'c25', title:'Combo 60 Bolinhas Lovers', price:48.50, desc:'60 bolinhas + 20 coxinhas + 20 churros + refri 2L', img:'img/fotos/bolinha.jpg' },
-
-  { id:'c26', title:'Combo 100 Risoles Lovers', price:71.20, desc:'100 risoles + 20 churros + refri 2L', img:'img/fotos/risole.jpg' },
-  { id:'c27', title:'Combo 40 Kibe Lovers', price:37.20, desc:'40 kibes + 20 churros + refri 2L', img:'img/fotos/kibe.jpg' },
-  { id:'c28', title:'Combo 60 Risoles Lovers', price:48.50, desc:'60 risoles + 40 churros + refri 2L', img:'img/fotos/risole.jpg' },
-  { id:'c29', title:'Combo 100 Bolinhas Lovers', price:71.20, desc:'100 bolinhas + 20 churros + refri 2L', img:'img/fotos/bolinha.jpg' },
-  { id:'c30', title:'Combo 100 Mix Especial', price:71.20, desc:'50 coxinhas + 25 bolinhas + 25 churros + refri 2L', img:'img/fotos/misto.jpg' }
+</div>
 
 
 
 
 
 
-
-
-
-
-
-      ],
-      bebidas: [
-        { id:'b1', title:'Refrigerante 2L', price:12.00, desc:'Coca-Cola, Guaraná ou Fanta', img:'https://via.placeholder.com/100?text=Refri+2L' },
-        { id:'b2', title:'Refrigerante Lata', price:6.00, desc:'Coca-Cola, Guaraná ou Fanta', img:'https://via.placeholder.com/100?text=Refri+Lata' },
-      ]
-    };
-
-    let cart = [];
-    let categoriaAtual = 'combos';
-
-    function filtrarCategoria(cat){categoriaAtual=cat;renderProdutos();}
-
-    function renderProdutos(){
-      const container=document.getElementById('pageProdutos');
-      container.innerHTML='';
-      PRODUCTS[categoriaAtual].forEach(p=>{
-        const div=document.createElement('div');
-        div.className='card-item';
-        div.innerHTML=`
-          <img src="${p.img}">
-          <div class="card-info">
-            <h3>${p.title}</h3>
-            <p>${p.desc}</p>
-            <div class="price">R$ ${p.price.toFixed(2).replace('.',',')}</div>
-            <button class="btn primary" onclick="addToCart('${p.id}')">Adicionar</button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function abrirCarrinho(){
-      document.getElementById('pageProdutos').style.display='none';
-      document.getElementById('pageCarrinho').style.display='block';
-      renderCart();
-    }
-
-    function voltarProdutos(){
-      document.getElementById('pageProdutos').style.display='block';
-      document.getElementById('pageCarrinho').style.display='none';
-    }
-
-    function addToCart(id){
-      const p=[...PRODUCTS.combos,...PRODUCTS.bebidas].find(x=>x.id===id);
-      const existing=cart.find(i=>i.id===id);
-      if(existing) existing.qty++;
-      else cart.push({id:p.id,title:p.title,price:p.price,qty:1,desc:p.desc});
-      updateBottomBar();
-    }
-
-    function renderCart(){
-      const cartEl=document.getElementById('cart');
-      cartEl.innerHTML='';
-      cart.forEach((item,idx)=>{
-        const div=document.createElement('div');
-        div.className='cart-item';
-        div.innerHTML=`
-          <strong>${item.title}</strong>
-          <p>${item.desc}</p>
-          <div>Qtd: ${item.qty}</div>
-          <div>R$ ${(item.price*item.qty).toFixed(2).replace('.',',')}</div>
-          <button class="btn secondary" onclick="decrement(${idx})">-</button>
-          <button class="btn danger" onclick="removeItem(${idx})">Remover</button>
-        `;
-        cartEl.appendChild(div);
-      });
-      updateResumo();
-    }
-
-    function decrement(idx){cart[idx].qty=Math.max(1,cart[idx].qty-1);renderCart();updateBottomBar();}
-    function removeItem(idx){cart.splice(idx,1);renderCart();updateBottomBar();}
-
-    function updateResumo(){
-      const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
-      const total=subtotal+TAXA;
-      document.getElementById('resumo').innerHTML=`
-        <div>Subtotal: R$ ${subtotal.toFixed(2).replace('.',',')}</div>
-        <div>Taxa: R$ ${TAXA.toFixed(2).replace('.',',')}</div>
-        <div><strong>Total: R$ ${total.toFixed(2).replace('.',',')}</strong></div>
-      `;
-    }
-
-    function updateBottomBar(){
-      const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
-      document.getElementById('bottomTotal').textContent=`Total: R$ ${subtotal.toFixed(2).replace('.',',')}`;
-    }
-
-    function enviarPedido(){
-      if(cart.length===0){alert('Carrinho vazio');return;}
-      const bairro=document.getElementById('bairro').value;
-      const rua=document.getElementById('rua').value;
-      const numero=document.getElementById('numero').value;
-      if(!bairro||!rua||!numero){alert('Preencha o endereço completo');return;}
-
-      
-
-            const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
-      const total=subtotal+TAXA;
-      const itens=cart.map(i=>`${i.title} x${i.qty} - R$ ${(i.price*i.qty).toFixed(2)}`).join('%0A');
-      const endereco=`Endereço:%0ABairro: ${bairro}%0ARua: ${rua}%0ANº: ${numero}`;
-      const mensagem=`Olá! Gostaria de fazer o seguinte pedido:%0A${itens}%0A%0ASubtotal: R$ ${subtotal.toFixed(2)}%0ATaxa: R$ ${TAXA.toFixed(2)}%0ATotal: R$ ${total.toFixed(2)}%0A%0A${endereco}`;
-      const url=`https://wa.me/5511932198727?text=${mensagem}`;
-
-      window.open(url,'_blank');
-      cart=[]; // limpa carrinho após enviar
-      updateBottomBar();
-      voltarProdutos();
-    }
-
-    // Inicialização
-    document.addEventListener("DOMContentLoaded", () => {
-      renderProdutos();
-    });
-  </script>
-</body>
-</html>
+<div class="destaques" id="destaques">
+  <div class="destaque-item">
+    <img src="img/fotos/coxinha10.jpg" alt="Combo 25 Coxinhas">
+    <h3>Combo 25 Coxinhas</h3>
+    <div class="price">R$ 27,30</div>
+    <button class="btn primary" onclick="addToCart('c1')">Adicionar</button>
+  </div>
+  <div class="destaque-item">
+    <img src="img/fotos/coxinha.jpg">
+    <h3>Combo 25 Kibes</h3>
+    <div class="price">R$ 27,30</div>
+    <button class="btn primary" onclick="addToCart('c2')">Adicionar</button>
+  </div>
+  <div class="destaque-item">
+    <img src="img/fotos/coxinha.jpg">
+    <h3>Combo 25 Risoles</h3>
+    <div class="price">R$ 27,30</div>
+    <button class="btn primary" onclick="addToCart('c3')">Adicionar</button>
+  </div>
+</div>
+</header>
+</header>
