@@ -61,21 +61,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="destaques" id="destaques">
   <div class="destaque-item">
-    <img src="img/fotos/coxinha10.jpg" alt="Combo 25 Coxinhas">
+    <img src="img/fotos/coxinha10.jpg" >
     <h3>Combo 25 Coxinhas</h3>
     <div class="price">R$ 27,30</div>
     <button class="btn primary" onclick="addToCart('c1')">Adicionar</button>
@@ -95,3 +83,253 @@
 </div>
 </header>
 </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="categories" id="categories">
+    <button class="btn secondary" onclick="filtrarCategoria('combos')">Combos</button>
+    <button class="btn secondary" onclick="filtrarCategoria('bebidas')">Refrigerantes</button>
+  </div>
+
+  <div id="pageProdutos" class="product-list"></div>
+
+  <div id="pageCarrinho">
+    <button class="btn secondary" onclick="voltarProdutos()">← Voltar</button>
+    <h2>🛒 Seu Carrinho</h2>
+
+    <h3>Molhos</h3>
+    <div class="molhos">
+      <div class="molho-card">
+        <img src="img/fotos/coxinha.jpg">
+        <strong>Molho Barbecue</strong>
+        <p>Defumado</p>
+        <div>R$ 5,00</div>
+        <button class="btn primary" onclick="addMolho('Molho Barbecue')">Adicionar</button>
+      </div>
+      <div class="molho-card">
+        <img src="img/fotos/coxinha.jpg">
+        <strong>Molho Cheddar</strong>
+        <p>Cremoso</p>
+        <div>R$ 5,00</div>
+        <button class="btn primary" onclick="addMolho('Molho Cheddar')">Adicionar</button>
+      </div>
+      <div class="molho-card">
+        <img src="img/fotos/coxinha.jpg">
+        <strong>Molho de Alho</strong>
+        <p>Tradicional</p>
+        <div>R$ 5,00</div>
+        <button class="btn primary" onclick="addMolho('Molho de Alho')">Adicionar</button>
+      </div>
+    </div>
+
+    <div id="cart"></div>
+    <button class="btn primary" onclick="abrirModal()">Confirmar Pedido</button>
+  </div>
+
+  <div id="bottomBar">
+    <span id="bottomTotal">Subtotal: R$ 0,00</span>
+    <button class="btn primary" onclick="abrirCarrinho()">Ver sacola</button>
+  </div>
+
+  <div id="modalEndereco">
+    <div class="modal-content">
+      <button class="btn secondary" onclick="fecharModal()">← Voltar para sacola</button>
+      <h3>Informe seus dados</h3>
+      <input type="text" id="nome" placeholder="Nome completo">
+      <input type="text" id="rua" placeholder="Rua">
+      <input type="text" id="numero" placeholder="Número da casa">
+      <input type="text" id="bairro" placeholder="Bairro">
+      <select id="pagamento">
+        <option value="">Forma de pagamento</option>
+        <option value="Débito">Cartão Débito</option>
+        <option value="Crédito">Cartão Crédito</option>
+        <option value="Dinheiro">Dinheiro</option>
+      </select>
+      <input type="text" id="troco" placeholder="Troco para quanto?" style="display:none;">
+
+      <div class="cupom" id="cupomResumo">
+        <h4>📜 Cupom do Pedido</h4>
+        <div id="cupomItens"></div>
+        <div id="cupomTotal"></div>
+      </div>
+
+      <button class="btn primary" onclick="enviarPedido()">Confirmar e Enviar</button>
+      <button class="btn danger" onclick="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+
+<script>
+  const TAXA = 4.00;
+  let cart = [];
+  let categoriaAtual = 'combos'; // já inicia com combos
+
+  const PRODUCTS = {
+    combos: [
+      { id:'c1', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img :'img/fotos/coxinha.jpg' },
+   
+      { id:'c2', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/fotos/coxinha.jpg' },
+      { id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/fotos/coxinha.jpg' }
+    ],
+    bebidas: [
+      { id:'b1', title:'Refrigerante 2L', price:12.00, desc:'Coca-Cola, Guaraná ou Fanta', img:'img/fotos/coxinha.jpg' },
+      { id:'b2', title:'Refrigerante Lata', price:6.00, desc:'Coca-Cola, Guaraná ou Fanta', img:'img/fotos/coxinha.jpg' }
+    ]
+  };
+
+  function filtrarCategoria(cat){categoriaAtual=cat;renderProdutos();}
+
+  function renderProdutos(){
+    const container=document.getElementById('pageProdutos');
+    container.innerHTML='';
+    PRODUCTS[categoriaAtual].forEach(p=>{
+      const div=document.createElement('div');
+      div.className='card-item';
+      div.innerHTML=`
+        <img src="${p.img}">
+        <div class="card-info">
+          <h3>${p.title}</h3>
+          <p>${p.desc}</p>
+          <div class="price">R$ ${p.price.toFixed(2).replace('.',',')}</div>
+          <button class="btn primary" onclick="addToCart('${p.id}')">Adicionar</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function abrirCarrinho(){
+    document.getElementById('pageProdutos').style.display='none';
+    document.getElementById('categories').style.display='none'; 
+    document.getElementById('pageCarrinho').style.display='block';
+    renderCart();
+  }
+  function voltarProdutos(){
+    document.getElementById('pageProdutos').style.display='block';
+    document.getElementById('categories').style.display='flex'; 
+    document.getElementById('pageCarrinho').style.display='none';
+  }
+
+  function addToCart(id){
+    const p=[...PRODUCTS.combos,...PRODUCTS.bebidas].find(x=>x.id===id);
+    const existing=cart.find(i=>i.id===id);
+    if(existing) existing.qty++;
+    else cart.push({id:p.id,title:p.title,price:p.price,qty:1,desc:p.desc,img:p.img});
+    updateBottomBar();
+  }
+
+  function addMolho(nome){
+    cart.push({id:nome,title:nome,price:5.00,qty:1,desc:'Molho adicional',img:'img/fotos/coxinha.jpg'});
+    updateBottomBar();
+    renderCart();
+  }
+
+  function renderCart(){
+    const cartEl=document.getElementById('cart');
+    cartEl.innerHTML='';
+    cart.forEach((item,idx)=>{
+      cartEl.innerHTML += `
+        <div class="cart-item">
+          <img src="${item.img}">
+          <div style="flex:1;">
+            <strong>${item.title}</strong><br>
+            <small>${item.desc}</small><br>
+            <span>Qtd: ${item.qty} | R$ ${(item.price*item.qty).toFixed(2)}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <button class="btn secondary" onclick="increaseQty(${idx})">+</button>
+            <button class="btn secondary" onclick="decreaseQty(${idx})">-</button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function increaseQty(idx){ cart[idx].qty++; renderCart(); updateBottomBar(); }
+  function decreaseQty(idx){ if(cart[idx].qty>1){cart[idx].qty--;} else {cart.splice(idx,1);} renderCart(); updateBottomBar(); }
+
+  function updateBottomBar(){
+    const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    document.getElementById('bottomTotal').textContent=`Subtotal: R$ ${subtotal.toFixed(2).replace('.',',')}`;
+  }
+
+  function abrirModal(){
+    if(cart.length===0){alert('Carrinho vazio');return;}
+    document.getElementById('modalEndereco').style.display='flex';
+    renderCupom();
+  }
+  function fecharModal(){document.getElementById('modalEndereco').style.display='none';}
+
+  function renderCupom(){
+    const cupomItens=document.getElementById('cupomItens');
+    const cupomTotal=document.getElementById('cupomTotal');
+    cupomItens.innerHTML='';
+    cart.forEach(item=>{
+      cupomItens.innerHTML += `${item.title} x${item.qty} - R$ ${(item.price*item.qty).toFixed(2)}<br>`;
+    });
+    const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const total=subtotal+TAXA;
+    cupomTotal.innerHTML=`Subtotal: R$ ${subtotal.toFixed(2)}<br>Taxa de entrega: R$ ${TAXA.toFixed(2)}<br><strong>Total: R$ ${total.toFixed(2)}</strong>`;
+  }
+
+  document.getElementById('pagamento').addEventListener('change',function(){
+    if(this.value==='Dinheiro'){
+      document.getElementById('troco').style.display='block';
+    } else {
+      document.getElementById('troco').style.display='none';
+    }
+  });
+
+  function enviarPedido(){
+    const nome=document.getElementById('nome').value;
+    const rua=document.getElementById('rua').value;
+    const numero=document.getElementById('numero').value;
+    const bairro=document.getElementById('bairro').value;
+    const pagamento=document.getElementById('pagamento').value;
+    const troco=document.getElementById('troco').value;
+
+    if(!nome||!rua||!numero||!bairro||!pagamento){
+      alert('Preencha todos os campos obrigatórios');
+      return;
+    }
+
+    const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const total=subtotal+TAXA;
+    const itens=cart.map(i=>`${i.title} x${i.qty} - R$ ${(i.price*i.qty).toFixed(2)}`).join('%0A');
+    let pagamentoInfo=`Forma de pagamento: ${pagamento}`;
+    if(pagamento==='Dinheiro' && troco){
+      pagamentoInfo+=`%0ATroco para: R$ ${troco}`;
+    }
+
+    const endereco=`Nome: ${nome}%0ARua: ${rua}, Nº: ${numero}%0ABairro: ${bairro}`;
+    const mensagem=`Olá! Gostaria de fazer o seguinte pedido:%0A${itens}%0A%0ASubtotal: R$ ${subtotal.toFixed(2)}%0ATaxa de entrega: R$ ${TAXA.toFixed(2)}%0ATotal: R$ ${total.toFixed(2)}%0A%0A${endereco}%0A${pagamentoInfo}`;
+    const url=`https://wa.me/5511932198727?text=${mensagem}`;
+
+    window.open(url,'_blank');
+    cart=[];updateBottomBar();voltarProdutos();fecharModal();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderProdutos(); // combos aparecem logo ao carregar
+  });
+</script>
+</body>
+</html>
+
