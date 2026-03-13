@@ -197,32 +197,8 @@
       { id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/coxinha.jpg' }
     ],
     bebidas: [
-     
-      { id:'b1', title:'Pepsi Lata 350ml', price:7.00, desc:'Pepsi gelada 350ml', img:'img/pepsi-lata.jpg' },
-{ id:'b2', title:'Coca-Cola Lata 350ml', price:7.00, desc:'Coca-Cola gelada 350ml', img:'img/coca-lata.jpg' },
-{ id:'b3', title:'Fanta Laranja Lata 350ml', price:7.00, desc:'Fanta sabor laranja 350ml', img:'img/fanta-laranja-lata.jpg' },
-{ id:'b4', title:'Fanta Uva Lata 350ml', price:7.00, desc:'Fanta sabor uva 350ml', img:'img/fanta-uva-lata.jpg' },
-{ id:'b5', title:'Guaraná Antarctica Lata 350ml', price:7.00, desc:'Guaraná Antarctica 350ml', img:'img/guarana-lata.jpg' },
-{ id:'b6', title:'Sukita Laranja Lata 350ml', price:7.00, desc:'Sukita sabor laranja 350ml', img:'img/sukita-laranja-lata.jpg' },
-{ id:'b7', title:'Sukita Uva Lata 350ml', price:7.00, desc:'Sukita sabor uva 350ml', img:'img/sukita-uva-lata.jpg' },
-{ id:'b8', title:'Itubaína Lata 350ml', price:7.00, desc:'Itubaína tradicional 350ml', img:'img/itubaina-lata.jpg' },
-
-
-{ id:'b9', title:'Convenção Frutaina 2L', price:9.99, desc:'Convenção sabor frutaina 2 litros', img:'img/convensao-frutaina-2l.jpg' },
-{ id:'b10', title:'Convenção Guaraná 2L', price:9.99, desc:'Convenção sabor guaraná 2 litros', img:'img/convensao-guarana-2l.jpg' },
-{ id:'b11', title:'Coca-Cola 2L', price:16.99, desc:'Coca-Cola garrafa 2 litros', img:'img/coca-2l.jpg' },
-
-
-
-
-
-
-
-
-
-
-
-
+      { id:'b1', title:'Refrigerante 2L', price:12.00, desc:'Coca-Cola, Guaraná ou Fanta', img:'img/coxinha.jpg' },
+      { id:'b2', title:'Refrigerante Lata', price:6.00, desc:'Coca-Cola, Guaraná ou Fanta', img:'img/coxinha.jpg' }
     ]
   };
 
