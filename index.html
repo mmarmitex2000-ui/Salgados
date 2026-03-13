@@ -50,17 +50,18 @@ header, .top-section, .destaques, .categories, .product-list {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+#bottomBar {
+  position: fixed;
+  bottom: 15px;   /* sobe 15px em relação ao fundo */
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
 
 
 
@@ -81,6 +82,8 @@ header, .top-section, .destaques, .categories, .product-list {
     .categories button{flex:1;}
 
     .product-list{padding:10px;}
+    .product-list { padding-bottom: 50px; /* empurra todos os itens para cima */
+}
     .card-item{display:flex;align-items:center;background:#fff;border-radius:10px;padding:15px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
     .card-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-right:15px;}
 
@@ -251,20 +254,10 @@ header, .top-section, .destaques, .categories, .product-list {
 { id:'b10', title:'Convenção Guaraná 2L', price:9.99, desc:'Convenção sabor guaraná 2 litros', img:'img/convensao-guarana-2l.jpg' },
 { id:'b11', title:'Coca-Cola 2L', price:16.99, desc:'Coca-Cola garrafa 2 litros', img:'img/coca-2l.jpg' },
 
-
-
-
-
-
-
-
-
-
-
-
     ]
   };
 
+  
   function filtrarCategoria(cat){categoriaAtual=cat;renderProdutos();}
 
   function renderProdutos(){
