@@ -48,11 +48,10 @@ header, .top-section, .destaques, .categories, .product-list {
   max-width: 100%;
   height: auto;
 }
-
-
+/* Barra padrão visível fora do carrinho */
 #bottomBar {
   position: fixed;
-  bottom: 15px;   /* sobe 15px em relação ao fundo */
+  bottom: 0;
   left: 0;
   right: 0;
   background: #fff;
@@ -63,13 +62,36 @@ header, .top-section, .destaques, .categories, .product-list {
   padding: 12px 20px;
 }
 
+/* Quando o carrinho estiver aberto, esconda o botão */
+.carrinho-aberto #bottomBar button {
+  display: none;
+}
+
+/* Mantém o total visível dentro do carrinho */
+.carrinho-aberto #bottomBar #bottomTotal {
+  flex: 1;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
     .btn{padding:6px 10px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;font-size:19px;transition:transform 0.1s ease;}
     .btn:active{transform:scale(0.95);} 
-    .btn.primary{background:#4caf50;color:#fff;}
-    .btn.secondary{background:#f1b611;color:#000000;}
+    .btn.primary{background:#4caf50;color:#fff;}   
+    .btn.secondary{background:#dda408;color:#000000;}
     .btn.danger{background:#ff5c5c;color:#fff;}
 
     .destaques{display:flex;gap:10px;padding:10px;position:sticky;top:0;background:#fff8e1;z-index:10;transition:opacity 0.3s ease, transform 0.3s ease;}
@@ -99,8 +121,7 @@ header, .top-section, .destaques, .categories, .product-list {
     .molho-card div{font-size:12px;}
     .molho-card button{font-size:12px;padding:4px 6px;}
 
-    #bottomBar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;}
-    #bottomTotal{font-size:16px;font-weight:bold;color:#000000;}
+   
 
     #modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;}
     .modal-content{background:#fff;padding:15px;border-radius:10px;width:300px;text-align:center;}
@@ -154,7 +175,18 @@ header, .top-section, .destaques, .categories, .product-list {
 <div id="pageProdutos" class="product-list"></div>
 
 <div id="pageCarrinho">
-  <button class="btn secondary" onclick="voltarProdutos()">← Voltar</button>
+  
+
+<button 
+  class="btn secondary" 
+  onclick="voltarProdutos()" 
+  style="background:#e61506; color:#fff; font-weight:bold;">
+  ← Voltar
+</button>
+
+
+
+
   <h2>Adicionar molhos ?</h2>
 
   <h3>Molhos</h3>
@@ -183,8 +215,13 @@ header, .top-section, .destaques, .categories, .product-list {
   </div>
 
   <div id="cart"></div>
-  <button class="btn primary" onclick="abrirModal()">Confirmar Pedido</button>
+  <button class="btn primary" onclick="abrirModal()">Confirmar Pedio</button>
+
 </div>
+ 
+<button style="visibility:hidden; margin-bottom:20px;">Botão 1</button>
+<button style="visibility:hidden; margin-bottom:20px;">Botão 2</button>
+<button style="visibility:hidden; margin-bottom:20px;">Botão 3</button>
 
 <div id="bottomBar">
   <span id="bottomTotal">Subtotal: R$ 0,00</span>
@@ -279,19 +316,45 @@ header, .top-section, .destaques, .categories, .product-list {
     });
   }
 
-  function abrirCarrinho(){
-    document.getElementById('pageProdutos').style.display='none';
-    document.getElementById('categories').style.display='none'; 
-    document.getElementById('destaques').style.display='none'; // esconde destaques
-    document.getElementById('pageCarrinho').style.display='block';
-    renderCart();
-  }
-  function voltarProdutos(){
-    document.getElementById('pageProdutos').style.display='block';
-    document.getElementById('categories').style.display='flex'; 
-    document.getElementById('destaques').style.display='flex'; // mostra destaques novamente
-    document.getElementById('pageCarrinho').style.display='none';
-  }
+
+
+function abrirCarrinho() {
+  // adiciona classe para esconder o botão "Ver sacola"
+  document.body.classList.add('carrinho-aberto');
+
+  // mostra carrinho
+  document.getElementById('pageCarrinho').style.display = 'block';
+
+  // esconde produtos, categorias e destaques
+  document.getElementById('pageProdutos').style.display = 'none';
+  document.getElementById('categories').style.display = 'none'; 
+  document.getElementById('destaques').style.display = 'none';
+
+  // renderiza itens do carrinho
+  renderCart();
+}
+
+function fecharCarrinho() {
+  // remove classe para voltar a mostrar o botão "Ver sacola"
+  document.body.classList.remove('carrinho-aberto');
+
+  // esconde carrinho
+  document.getElementById('pageCarrinho').style.display = 'none';
+}
+
+function voltarProdutos() {
+  // mostra produtos, categorias e destaques
+  document.getElementById('pageProdutos').style.display = 'block';
+  document.getElementById('categories').style.display = 'flex'; 
+  document.getElementById('destaques').style.display = 'flex';
+
+  // esconde carrinho
+  document.getElementById('pageCarrinho').style.display = 'none';
+
+  // garante que o botão "Ver sacola" volte
+  document.body.classList.remove('carrinho-aberto');
+}
+
 
   function addToCart(id){
     const p=[...PRODUCTS.combos,...PRODUCTS.bebidas].find(x=>x.id===id);
