@@ -31,6 +31,37 @@
 }
 
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* evita rolagem lateral */
+}
+
+header, .top-section, .destaques, .categories, .product-list {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+
+.logo-img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -87,6 +118,10 @@
 
 
 <!-- Destaques -->
+
+
+
+
 <div class="destaques" id="destaques">
   <div class="destaque-item">
     <img src="img/coxinha.jpg" alt="Combo 25 Coxinhas">
@@ -192,9 +227,13 @@
 
   const PRODUCTS = {
     combos: [
-      { id:'c1', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
-      { id:'c2', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/coxinha.jpg' },
-      { id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/coxinha.jpg' }
+{ id:'c1', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
+{ id:'c2', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/kibe.jpg' },
+{ id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/risoles.jpg' },
+{ id:'c4', title:'Combo 25 Bolinhas de Queijo', price:27.30, desc:'25 bolinhas de queijo + refri lata', img:'img/bolinha-queijo.jpg' },
+{ id:'c5', title:'Combo 25 Enroladinhos de Salsicha', price:27.30, desc:'25 enroladinhos de salsicha + refri lata', img:'img/enroladinho.jpg' }
+
+      
     ],
     bebidas: [
      
