@@ -8,46 +8,47 @@
     :root { --headerH: 0px; --destaquesH: 0px; --categoriasH: 0px; }
 
     body{margin:0;font-family:Arial,sans-serif;background:#fff8e1;color:#333;padding-bottom:60px;}
+    /* header não é sticky e aparece só quando o body tem.is-home */
     header{
       padding:1px;background:#fad400;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      position:sticky; top:0; z-index:50;
+      position:relative;
     }
- .logo{font-size:40px;font-weight:bold;text-align:center;background:linear-gradient(to left,#ff0000,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo{font-size:40px;font-weight:bold;text-align:center;background:linear-gradient(to left,#ff0000,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-.logo-img { width: 500px; height: auto; display: block; margin: 10px auto; }
-.logo-img { width: 600px; object-fit: contain; display: block; margin: 0px auto; }
+.logo-img { width: 600px; max-width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto; }
 
-html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
-header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-sizing: border-box; }
-.logo-img { max-width: 100%; height: auto; }
+    html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
+    header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-sizing: border-box; }
 
-/* FAIXAS que ficam abaixo do logo e grudam ao rolar */
+    /* FAIXAS que grudam ao rolar */
 .destaques{
-  display:flex; gap:10px; padding:10px; background:#fff8e1;
-  position:sticky; top:var(--headerH); z-index:40;
-}
+      display:flex; gap:10px; padding:10px; background:#fff8e1;
+      position:sticky; top:0; /* gruda no topo */
+      z-index:40;
+    }
 .destaque-item{flex:1;background:#fff;border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
 .destaque-item img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
 .destaque-item h3{font-size:14px;margin:5px 0;}
-.destaque-item.price{font-size:14px;color:#e53935;font-weight:bold;}
+.price{font-size:14px;color:#e53935;font-weight:bold;}
 
 .categories{
-  display:flex; gap:10px; padding:10px; background:#fff8e1; border-bottom:1px solid #eee;
-  position:sticky; top:calc(var(--headerH) + var(--destaquesH)); z-index:39;
-}
+      display:flex; gap:10px; padding:10px; background:#fff8e1; border-bottom:1px solid #eee;
+      position:sticky; top:var(--destaquesH); /* gruda logo abaixo dos destaques */
+      z-index:39;
+    }
 .categories button{flex:1;}
 
-/* LISTA DE PRODUTOS (passa por baixo das faixas) */
+    /* LISTA DE PRODUTOS */
 .product-list{padding:10px; padding-bottom: 50px; position:relative; z-index:10;}
 .card-item{display:flex;align-items:center;background:#fff;border-radius:10px;padding:15px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
 .card-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-right:15px;}
 
-/* Barra inferior */
-#bottomBar {
-  position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #ddd;
-  display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; font-weight: bold; z-index: 60;
-}
-#bottomTotal.valor{ color:#e53935; }
+    /* Barra inferior */
+    #bottomBar {
+      position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #ddd;
+      display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; font-weight: bold; z-index: 60;
+    }
+    #bottomTotal.valor{ color:#e53935; }
 .carrinho-aberto #bottomBar button { display: none; }
 .carrinho-aberto #bottomBar #bottomTotal { flex: 1; text-align: center; }
 
@@ -57,56 +58,138 @@ header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-
 .btn.secondary{background:#dda408;color:#000000;}
 .btn.danger{background:#ff5c5c;color:#fff;}
 
-#pageCarrinho{display:none;padding:20px;}
+    #pageCarrinho{display:none;padding:20px;}
 .cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fff;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
 .cart-item img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
 
-.molhos{display:flex;gap:8px;margin:10px 0;}
-.molho-card{flex:1;background:#fff;border-radius:8px;padding:4px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
-.molho-card img{width:100%;height:45px;object-fit:cover;border-radius:6px;}
-.molho-card strong{font-size:13px;}
-.molho-card p{font-size:12px;margin:4px 0;}
-.molho-card div{font-size:12px;}
-.molho-card button{font-size:12px;padding:4px 6px;}
+ /* Molhos: 5 colunas fixas, sem scroll */
+.molhos{
+   display:grid;
+   grid-template-columns: repeat(5, minmax(0, 1fr));
+   gap:6px;
+   margin:10px 0;
+ }
+.molho-card{
+   background:#fff;
+   border-radius:8px;
+   padding:6px 4px;
+   text-align:center;
+   box-shadow:0 1px 4px rgba(0,0,0,0.1);
+ }
+.molho-card img{
+   width:100%;
+   height:48px;
+   object-fit:cover;
+   border-radius:6px;
+ }
+.molho-card strong{
+   display:block;
+   font-size:12px;
+   line-height:1.1;
+   margin-top:4px;
+   white-space:nowrap;
+   overflow:hidden;
+   text-overflow:ellipsis;
+ }
+.molho-card p{
+   font-size:11px;
+   margin:3px 0;
+   white-space:nowrap;
+   overflow:hidden;
+   text-overflow:ellipsis;
+ }
+.molho-card div{ font-size:11px; }
+.molho-card button{
+   font-size:11px;
+   padding:3px 6px;
+   border-radius:6px;
+ }
+ @media (max-width:360px){
+ .molho-card img{ height:44px; }
+ .molho-card strong{ font-size:11px; }
+ .molho-card p,.molho-card div,.molho-card button{ font-size:10px; }
+ }
 
-#modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:80;}
+    #modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:80;}
 .modal-content{background:#fff;padding:15px;border-radius:10px;width:300px;text-align:center;}
 .modal-content input,.modal-content select{width:100%;padding:6px;margin:4px 0;border:1px solid #ccc;border-radius:5px;font-size:13px;}
 .cupom{background:#f9f9f9;border:1px dashed #aaa;padding:10px;margin:10px 0;text-align:left;font-size:13px;}
 .cupom h4{margin:0 0 8px 0;text-align:center;}
 
-/* Toast */
-#toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#323232;color:#fff;padding:8px 14px;border-radius:6px;opacity:0;transition:.2s;z-index:9999;pointer-events:none;}
-#toast.show{opacity:.95;}
+    /* Toast */
+    #toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#323232;color:#fff;padding:8px 14px;border-radius:6px;opacity:0;transition:.2s;z-index:9999;pointer-events:none;}
+    #toast.show{opacity:.95;}
+
+    /* Header apenas na home (controlado pela classe no body) */
+    #header { display: none; }
+    body.is-home #header { display: flex; }
+
+    /* >>> Mascote que bate palma */
+    #mascote{
+      position:fixed;
+      right:16px; bottom:80px;
+      font-size:44px; line-height:1;
+      transform: translateY(20px) scale(.9);
+      opacity:0; pointer-events:none;
+      z-index:9998;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.2));
+      transition: opacity.18s ease, transform.18s ease;
+    }
+    #mascote.show{
+      opacity:1; transform: translateY(0) scale(1);
+      animation: pop.28s ease;
+    }
+    #mascote.hands{ display:inline-block; transform-origin: 50% 60%; }
+    #mascote.clap.hands{ animation: clap.45s ease; }
+    @keyframes pop {
+      0%{ transform: translateY(20px) scale(.9) }
+      60%{ transform: translateY(-4px) scale(1.06) }
+      100%{ transform: translateY(0) scale(1) }
+    }
+    @keyframes clap {
+      0% { transform: scale(1) rotate(0deg) }
+      15%{ transform: scale(1.12) rotate(-6deg) }
+      30%{ transform: scale(0.96) rotate(6deg) }
+      45%{ transform: scale(1.12) rotate(-6deg) }
+      60%{ transform: scale(0.96) rotate(6deg) }
+      75%{ transform: scale(1.12) rotate(-6deg) }
+      100%{ transform: scale(1) rotate(0deg) }
+    }
+    @media (max-width:360px){
+      #mascote{ right:12px; bottom:76px; font-size:40px; }
+    }
   </style>
 </head>
-<body>
+<!-- começa como home por padrão -->
+<body class="is-home">
 
 <header id="header">
   <img src="img/logo.png" alt="Super Salgados" class="logo-img">
 </header>
 
-<div id="toast">item adicionado a sacola</div>
+<div id="toast">item adicionado</div>
+<!-- >>> Mascote -->
+<div id="mascote" aria-hidden="true"><span class="hands">👏</span></div>
 
-<!-- Destaques (gruda abaixo do logo) -->
+<!-- Destaques (gruda no topo ao rolar) -->
 <div class="destaques" id="destaques">
   <div class="destaque-item">
     <img src="img/coxinha.jpg" alt="Combo 25 Coxinhas">
     <h3>Combo 25 Coxinhas</h3>
     <div class="price">R$ 27,30</div>
-    <button class="btn primary" onclick="addToCart('c1')">Adicionar</button>
+    <button class="btn primary" onclick="addToCart('c23')">Adicionar</button>
   </div>
   <div class="destaque-item">
     <img src="img/coxinha.jpg" alt="Combo 25 Kibes">
     <h3>Combo 25 Kibes</h3>
     <div class="price">R$ 27,30</div>
-    <button class="btn primary" onclick="addToCart('c2')">Adicionar</button>
+    <button class="btn primary" onclick="addToCart('c24')">Adicionar</button>
   </div>
   <div class="destaque-item">
     <img src="img/coxinha.jpg" alt="Combo 25 Risoles">
     <h3>Combo 25 Risoles</h3>
     <div class="price">R$ 27,30</div>
-    <button class="btn primary" onclick="addToCart('c3')">Adicionar</button>
+    <button class="btn primary" onclick="addToCart('c25')">Adicionar</button>
   </div>
 </div>
 
@@ -114,6 +197,7 @@ header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-
 <div class="categories" id="categories">
   <button class="btn secondary" onclick="filtrarCategoria('combos')">Combos</button>
   <button class="btn secondary" onclick="filtrarCategoria('bebidas')">Refrigerantes</button>
+  <button class="btn secondary" onclick="filtrarCategoria('promoções')">promoções</button>
 </div>
 
 <!-- Conteúdo que rola por baixo -->
@@ -123,29 +207,46 @@ header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-
   <div id="pageCarrinho">
     <button class="btn secondary" onclick="voltarProdutos()" style="background:#e61506; color:#fff; font-weight:bold;">← Voltar</button>
 
-    <h2>Adicionar molhos?</h2>
     <h3>Molhos</h3>
     <div class="molhos">
       <div class="molho-card">
-        <img src="img/coxinha.jpg">
+        <img src="img/barbecue.jpg" alt="Molho Barbecue">
         <strong>Molho Barbecue</strong>
         <p>Defumado</p>
         <div>R$ 5,00</div>
         <button class="btn primary" onclick="addMolho('Molho Barbecue')">Adicionar</button>
       </div>
+
       <div class="molho-card">
-        <img src="img/coxinha.jpg">
+        <img src="img/mostarda.jpg" alt="Molho Mostarda">
+        <strong>Molho Mostarda</strong>
+        <p>Cremoso</p>
+        <div>R$ 5,00</div>
+        <button class="btn primary" onclick="addMolho('Molho Mostarda')">Adicionar</button>
+      </div>
+
+      <div class="molho-card">
+        <img src="img/cheddar.jpg" alt="Molho Cheddar">
         <strong>Molho Cheddar</strong>
         <p>Cremoso</p>
         <div>R$ 5,00</div>
         <button class="btn primary" onclick="addMolho('Molho Cheddar')">Adicionar</button>
       </div>
+
       <div class="molho-card">
-        <img src="img/coxinha.jpg">
+        <img src="img/alho.jpg" alt="Molho de Alho">
         <strong>Molho de Alho</strong>
         <p>Tradicional</p>
         <div>R$ 5,00</div>
         <button class="btn primary" onclick="addMolho('Molho de Alho')">Adicionar</button>
+      </div>
+
+      <div class="molho-card">
+        <img src="img/ketchup.jpg" alt="Ketchup">
+        <strong>Ketchup</strong>
+        <p>Tradicional</p>
+        <div>R$ 5,00</div>
+        <button class="btn primary" onclick="addMolho('Ketchup')">Adicionar</button>
       </div>
     </div>
 
@@ -197,25 +298,64 @@ header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-
 
   const PRODUCTS = {
     combos: [
-{ id:'c1', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
-{ id:'c2', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/kibe.jpg' },
-{ id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/risoles.jpg' },
-{ id:'c4', title:'Combo 25 Bolinhas de Queijo', price:27.30, desc:'25 bolinhas de queijo + refri lata', img:'img/bolinha-queijo.jpg' },
-{ id:'c5', title:'Combo 25 Enroladinhos de Salsicha', price:27.30, desc:'25 enroladinhos de salsicha + refri lata', img:'img/enroladinho.jpg' }
+      { id:'c1', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 risoles + 50 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c2', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 risoles + 50 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c3', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 bolinhas + 50 risoles + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c4', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 risoles + 25 bolinhas + 50 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c5', title:'Combo 40 (20+20)', price:46.69, desc:'20 coxinhas + 20 risoles + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c6', title:'Combo 40 (20+20)', price:46.69, desc:'20 coxinhas + 20 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c7', title:'Combo 40 (20+20)', price:46.69, desc:'20 coxinhas + 20 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c8', title:'Combo 40 (20+20)', price:46.69, desc:'20 risoles + 20 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c9', title:'Combo 40 (20+20)', price:46.69, desc:'20 risoles + 20 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c10', title:'Combo 40 (20+20)', price:46.69, desc:'20 bolinhas + 20 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c11', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 coxinhas + 15 risoles + 15 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c12', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 coxinhas + 15 risoles + 15 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c13', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 coxinhas + 15 bolinhas + 15 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c14', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 risoles + 15 coxinhas + 15 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c15', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 risoles + 15 coxinhas + 15 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c16', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 risoles + 15 bolinhas + 15 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c17', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 bolinhas + 15 coxinhas + 15 risoles + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c18', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 bolinhas + 15 coxinhas + 15 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c19', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 bolinhas + 15 risoles + 15 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c20', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 kibes + 15 coxinhas + 15 risoles + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c21', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 kibes + 15 coxinhas + 15 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c22', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 kibes + 15 risoles + 15 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c23', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
+      { id:'c24', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/coxinha.jpg' },
+      { id:'c25', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/coxinha.jpg' },
     ],
     bebidas: [
       { id:'b1', title:'Pepsi Lata 350ml', price:7.00, desc:'Pepsi gelada 350ml', img:'img/pepsi-lata.jpg' },
-{ id:'b2', title:'Coca-Cola Lata 350ml', price:7.00, desc:'Coca-Cola gelada 350ml', img:'img/coca-lata.jpg' },
-{ id:'b3', title:'Fanta Laranja Lata 350ml', price:7.00, desc:'Fanta sabor laranja 350ml', img:'img/fanta-laranja-lata.jpg' },
-{ id:'b4', title:'Fanta Uva Lata 350ml', price:7.00, desc:'Fanta sabor uva 350ml', img:'img/fanta-uva-lata.jpg' },
-{ id:'b5', title:'Guaraná Antarctica Lata 350ml', price:7.00, desc:'Guaraná Antarctica 350ml', img:'img/guarana-lata.jpg' },
-{ id:'b6', title:'Sukita Laranja Lata 350ml', price:7.00, desc:'Sukita sabor laranja 350ml', img:'img/sukita-laranja-lata.jpg' },
-{ id:'b7', title:'Sukita Uva Lata 350ml', price:7.00, desc:'Sukita sabor uva 350ml', img:'img/sukita-uva-lata.jpg' },
-{ id:'b8', title:'Itubaína Lata 350ml', price:7.00, desc:'Itubaína tradicional 350ml', img:'img/itubaina-lata.jpg' },
-{ id:'b9', title:'Convenção Frutaina 2L', price:9.99, desc:'Convenção sabor frutaina 2 litros', img:'img/convensao-frutaina-2l.jpg' },
-{ id:'b10', title:'Convenção Guaraná 2L', price:9.99, desc:'Convenção sabor guaraná 2 litros', img:'img/convensao-guarana-2l.jpg' },
-{ id:'b11', title:'Coca-Cola 2L', price:16.99, desc:'Coca-Cola garrafa 2 litros', img:'img/coca-2l.jpg' },
-    ]
+      { id:'b2', title:'Coca-Cola Lata 350ml', price:7.00, desc:'Coca-Cola gelada 350ml', img:'img/coca-lata.jpg' },
+      { id:'b3', title:'Fanta Laranja Lata 350ml', price:7.00, desc:'Fanta sabor laranja 350ml', img:'img/fanta-laranja-lata.jpg' },
+      { id:'b4', title:'Fanta Uva Lata 350ml', price:7.00, desc:'Fanta sabor uva 350ml', img:'img/fanta-uva-lata.jpg' },
+      { id:'b5', title:'Guaraná Antarctica Lata 350ml', price:7.00, desc:'Guaraná Antarctica 350ml', img:'img/guarana-lata.jpg' },
+      { id:'b6', title:'Sukita Laranja Lata 350ml', price:7.00, desc:'Sukita sabor laranja 350ml', img:'img/sukita-laranja-lata.jpg' },
+      { id:'b7', title:'Sukita Uva Lata 350ml', price:7.00, desc:'Sukita sabor uva 350ml', img:'img/sukita-uva-lata.jpg' },
+      { id:'b8', title:'Itubaína Lata 350ml', price:7.00, desc:'Itubaína tradicional 350ml', img:'img/itubaina-lata.jpg' },
+      { id:'b9', title:'Convenção Frutaina 2L', price:9.99, desc:'Convenção sabor frutaina 2 litros', img:'img/convensao-frutaina-2l.jpg' },
+      { id:'b10', title:'Convenção Guaraná 2L', price:9.99, desc:'Convenção sabor guaraná 2 litros', img:'img/convensao-guarana-2l.jpg' },
+      { id:'b11', title:'Coca-Cola 2L', price:16.99, desc:'Coca-Cola garrafa 2 litros', img:'img/coca-2l.jpg' },
+    ],
+    promoções: [
+      { id:'a1', title:'25 Coxinhas Avulsas', price:24.50, desc:'25 coxinhas', img:'img/coxinhas.jpg' },
+      { id:'a2', title:'25 Risoles Avulsos', price:24.50, desc:'25 risoles', img:'img/risoles.jpg' },
+      { id:'a3', title:'25 Bolinhas de Queijo Avulsas', price:24.50, desc:'25 bolinhas de queijo', img:'img/bolinhas_de_queijo.jpg' },
+      { id:'a4', title:'25 Kibes Avulsos', price:24.50, desc:'25 kibes', img:'img/kibes.jpg' },
+      { id:'a5', title:'25 Churros Avulsos', price:24.50, desc:'25 churros', img:'img/churros.jpg' },
+      { id:'c1', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
+      { id:'c2', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/kibe.jpg' },
+      { id:'c3', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/risoles.jpg' },
+    ],
+  };
+
+  // Catálogo de molhos (foto, descrição e preço)
+  const SAUCES = {
+    'Molho Barbecue': { img: 'img/barbecue.jpg', desc: 'Defumado', price: 5.00 },
+    'Molho Mostarda': { img: 'img/mostarda.jpg', desc: 'Cremoso', price: 5.00 },
+    'Molho Cheddar': { img: 'img/cheddar.jpg', desc: 'Cremoso', price: 5.00 },
+    'Molho de Alho': { img: 'img/alho.jpg', desc: 'Tradicional', price: 5.00 },
+    'Ketchup': { img: 'img/ketchup.jpg', desc: 'Tradicional', price: 5.00 },
   };
 
   function filtrarCategoria(cat){categoriaAtual=cat;renderProdutos();}
@@ -227,7 +367,7 @@ header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-
       const div=document.createElement('div');
       div.className='card-item';
       div.innerHTML=`
-        <img src="${p.img}">
+        <img src="${p.img}" alt="${p.title}">
         <div class="card-info">
           <h3>${p.title}</h3>
           <p>${p.desc}</p>
@@ -240,44 +380,58 @@ header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-
     updateOffsets();
   }
 
-function abrirCarrinho() {
-  document.body.classList.add('carrinho-aberto');
-  document.getElementById('pageCarrinho').style.display = 'block';
-  document.getElementById('pageProdutos').style.display = 'none';
-  document.getElementById('categories').style.display = 'none'; 
-  document.getElementById('destaques').style.display = 'none';
-  renderCart();
-}
+  function abrirCarrinho() {
+    document.body.classList.add('carrinho-aberto');
+    document.body.classList.remove('is-home'); // remove is-home -> esconde header
+    document.getElementById('pageCarrinho').style.display = 'block';
+    document.getElementById('pageProdutos').style.display = 'none';
+    document.getElementById('categories').style.display = 'none'; 
+    document.getElementById('destaques').style.display = 'none';
+    renderCart();
+    updateOffsets();
+  }
 
-function fecharCarrinho() {
-  document.body.classList.remove('carrinho-aberto');
-  document.getElementById('pageCarrinho').style.display = 'none';
-}
+  function fecharCarrinho() {
+    document.body.classList.remove('carrinho-aberto');
+    document.getElementById('pageCarrinho').style.display = 'none';
+  }
 
-function voltarProdutos() {
-  document.getElementById('pageProdutos').style.display = 'block';
-  document.getElementById('categories').style.display = 'flex'; 
-  document.getElementById('destaques').style.display = 'flex';
-  document.getElementById('pageCarrinho').style.display = 'none';
-  document.body.classList.remove('carrinho-aberto');
-  updateOffsets();
-}
+  function voltarProdutos() {
+    document.getElementById('pageProdutos').style.display = 'block';
+    document.getElementById('categories').style.display = 'flex'; 
+    document.getElementById('destaques').style.display = 'flex';
+    document.getElementById('pageCarrinho').style.display = 'none';
+    document.body.classList.remove('carrinho-aberto');
+    document.body.classList.add('is-home'); // volta a ser home -> mostra header
+    updateOffsets();
+  }
 
   function addToCart(id){
-    const p=[...PRODUCTS.combos,...PRODUCTS.bebidas].find(x=>x.id===id);
-    const existing=cart.find(i=>i.id===id);
+    const all = [...PRODUCTS.combos,...PRODUCTS.bebidas,...PRODUCTS.promoções];
+    const p = all.find(x=>x.id===id);
+    if(!p) return;
+    const existing = cart.find(i=>i.id===id);
     if(existing) existing.qty++;
     else cart.push({id:p.id,title:p.title,price:p.price,qty:1,desc:p.desc,img:p.img});
     updateBottomBar();
     renderCart();
-    showToast('item adicionado a sacola');
+    showToast('item adicionado');
+    showMascote(); // >>> anima o bonequinho
   }
 
   function addMolho(nome){
-    cart.push({id:nome,title:nome,price:5.00,qty:1,desc:'Molho adicional',img:'img/fotos/coxinha.jpg'});
+    const s = SAUCES[nome];
+    if(!s) return;
+    const id = 'molho:' + nome;
+    const existing = cart.find(i=>i.id===id);
+    if(existing){ existing.qty++; }
+    else{
+      cart.push({ id, title:nome, price:s.price, qty:1, desc:s.desc, img:s.img });
+    }
     updateBottomBar();
     renderCart();
-    showToast('item adicionado a sacola');
+    showToast('item adicionado');
+    showMascote(); // >>> anima o bonequinho
   }
 
   function renderCart(){
@@ -286,10 +440,10 @@ function voltarProdutos() {
     cart.forEach((item,idx)=>{
       cartEl.innerHTML += `
         <div class="cart-item">
-          <img src="${item.img}">
+          <img src="${item.img}" alt="${item.title}">
           <div style="flex:1;">
             <strong>${item.title}</strong><br>
-            <small>${item.desc}</small><br>
+            <small>${item.desc || ''}</small><br>
             <span>Qtd: ${item.qty} | R$ ${(item.price*item.qty).toFixed(2).replace('.',',')}</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px;">
@@ -316,6 +470,19 @@ function voltarProdutos() {
     setTimeout(()=>t.classList.remove('show'),1200);
   }
 
+  // >>> Mostra o mascote batendo palma
+  let mascoteTimer = null;
+  function showMascote(){
+    const m = document.getElementById('mascote');
+    if(!m) return;
+    m.classList.remove('show','clap');
+    // força reflow pra reiniciar animação
+    void m.offsetWidth;
+    m.classList.add('show','clap');
+    clearTimeout(mascoteTimer);
+    mascoteTimer = setTimeout(()=> m.classList.remove('show','clap'), 900);
+  }
+
   function abrirModal(){
     if(cart.length===0){alert('Carrinho vazio');return;}
     document.getElementById('modalEndereco').style.display='flex';
@@ -323,78 +490,78 @@ function voltarProdutos() {
   }
   function fecharModal(){document.getElementById('modalEndereco').style.display='none';}
 
-function renderCupom() {
-  const cupomItens = document.getElementById('cupomItens');
-  const cupomTotal = document.getElementById('cupomTotal');
-  cupomItens.innerHTML = '';
-  cart.forEach(item => {
-    cupomItens.innerHTML += `${item.title} x${item.qty} - R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}<br>`;
+  function renderCupom() {
+    const cupomItens = document.getElementById('cupomItens');
+    const cupomTotal = document.getElementById('cupomTotal');
+    cupomItens.innerHTML = '';
+    cart.forEach(item => {
+      cupomItens.innerHTML += `${item.title} x${item.qty} - R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}<br>`;
+    });
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const total = subtotal + TAXA;
+    cupomTotal.innerHTML = `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}<br>
+      Taxa de entrega: R$ ${TAXA.toFixed(2).replace('.', ',')}<br>
+      <strong>Total: R$ ${total.toFixed(2).replace('.', ',')}</strong>`;
+  }
+
+  document.getElementById('pagamento').addEventListener('change', function() {
+    if (this.value === 'Dinheiro') {
+      document.getElementById('troco').style.display = 'block';
+    } else {
+      document.getElementById('troco').style.display = 'none';
+    }
   });
-  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const total = subtotal + TAXA;
-  cupomTotal.innerHTML = `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}<br>
-    Taxa de entrega: R$ ${TAXA.toFixed(2).replace('.', ',')}<br>
-    <strong>Total: R$ ${total.toFixed(2).replace('.', ',')}</strong>`;
-}
 
-document.getElementById('pagamento').addEventListener('change', function() {
-  if (this.value === 'Dinheiro') {
-    document.getElementById('troco').style.display = 'block';
-  } else {
-    document.getElementById('troco').style.display = 'none';
-  }
-});
+  function enviarPedido() {
+    const nome = document.getElementById('nome').value;
+    const rua = document.getElementById('rua').value;
+    const numero = document.getElementById('numero').value;
+    const bairro = document.getElementById('bairro').value;
+    const pagamento = document.getElementById('pagamento').value;
+    const troco = document.getElementById('troco').value;
 
-function enviarPedido() {
-  const nome = document.getElementById('nome').value;
-  const rua = document.getElementById('rua').value;
-  const numero = document.getElementById('numero').value;
-  const bairro = document.getElementById('bairro').value;
-  const pagamento = document.getElementById('pagamento').value;
-  const troco = document.getElementById('troco').value;
+    if (!nome ||!rua ||!numero ||!bairro ||!pagamento) {
+      alert('Preencha todos os campos obrigatórios');
+      return;
+    }
 
-  if (!nome ||!rua ||!numero ||!bairro ||!pagamento) {
-    alert('Preencha todos os campos obrigatórios');
-    return;
-  }
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const total = subtotal + TAXA;
+    const itens = cart.map(i => `*${i.title} x${i.qty}* - R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`).join('%0A');
 
-  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const total = subtotal + TAXA;
-  const itens = cart.map(i => `*${i.title} x${i.qty}* - R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}`).join('%0A');
+    let pagamentoInfo = `Forma de pagamento: ${pagamento}`;
+    if (pagamento === 'Dinheiro' && troco) {
+      pagamentoInfo += `%0ATroco para: R$ ${troco}`;
+    }
 
-  let pagamentoInfo = `Forma de pagamento: ${pagamento}`;
-  if (pagamento === 'Dinheiro' && troco) {
-    pagamentoInfo += `%0ATroco para: R$ ${troco}`;
+    const endereco = `Nome: ${nome}%0ARua: ${rua}, Nº: ${numero}%0ABairro: ${bairro}`;
+    const mensagem = `Olá! Gostaria de fazer o seguinte pedido:%0A${itens}%0A%0ASubtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}%0ATaxa de entrega: R$ ${TAXA.toFixed(2).replace('.', ',')}%0A*Total: R$ ${total.toFixed(2).replace('.', ',')}*%0A%0A${endereco}%0A${pagamentoInfo}`;
+    const url = `https://wa.me/5511932198727?text=${mensagem}`;
+
+    window.open(url, '_blank');
+    cart = [];
+    updateBottomBar();
+    renderCart();
+    voltarProdutos();
+    fecharModal();
   }
 
-  const endereco = `Nome: ${nome}%0ARua: ${rua}, Nº: ${numero}%0ABairro: ${bairro}`;
-  const mensagem = `Olá! Gostaria de fazer o seguinte pedido:%0A${itens}%0A%0ASubtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}%0ATaxa de entrega: R$ ${TAXA.toFixed(2).replace('.', ',')}%0A*Total: R$ ${total.toFixed(2).replace('.', ',')}*%0A%0A${endereco}%0A${pagamentoInfo}`;
-  const url = `https://wa.me/5511932198727?text=${mensagem}`;
+  /* Offsets: calcula a altura real das barras para os "top" do sticky */
+  function updateOffsets(){
+    const hH = document.getElementById('header')?.offsetHeight || 0;
+    const hD = document.getElementById('destaques')?.offsetHeight || 0;
+    const hC = document.getElementById('categories')?.offsetHeight || 0;
+    document.documentElement.style.setProperty('--headerH', hH + 'px');
+    document.documentElement.style.setProperty('--destaquesH', hD + 'px');
+    document.documentElement.style.setProperty('--categoriasH', hC + 'px');
+  }
+  window.addEventListener('resize', updateOffsets);
 
-  window.open(url, '_blank');
-  cart = [];
-  updateBottomBar();
-  renderCart();
-  voltarProdutos();
-  fecharModal();
-}
-
-/* Offsets: calcula a altura real do header e das barras para os "top" do sticky */
-function updateOffsets(){
-  const hH = document.getElementById('header')?.offsetHeight || 0;
-  const hD = document.getElementById('destaques')?.offsetHeight || 0;
-  const hC = document.getElementById('categories')?.offsetHeight || 0;
-  document.documentElement.style.setProperty('--headerH', hH + 'px');
-  document.documentElement.style.setProperty('--destaquesH', hD + 'px');
-  document.documentElement.style.setProperty('--categoriasH', hC + 'px');
-}
-window.addEventListener('resize', updateOffsets);
-
-document.addEventListener("DOMContentLoaded", () => {
-  renderProdutos();
-  requestAnimationFrame(updateOffsets);
-  setTimeout(updateOffsets, 200);
-});
+  document.addEventListener("DOMContentLoaded", () => {
+    renderProdutos();
+    requestAnimationFrame(updateOffsets);
+    setTimeout(updateOffsets, 200);
+  });
 </script>
 </body>
 </html>
