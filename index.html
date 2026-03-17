@@ -8,123 +8,112 @@
     :root { --headerH: 0px; --destaquesH: 0px; --categoriasH: 0px; }
 
     body{margin:0;font-family:Arial,sans-serif;background:#fff8e1;color:#333;padding-bottom:60px;}
-    /* header não é sticky e aparece só quando o body tem.is-home */
     header{
       padding:1px;background:#fad400;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
       position:relative;
     }
-.logo{font-size:40px;font-weight:bold;text-align:center;background:linear-gradient(to left,#ff0000,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-
-.logo-img { width: 600px; max-width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto; }
+   .logo{font-size:40px;font-weight:bold;text-align:center;background:linear-gradient(to left,#ff0000,#ff69b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+   .logo-img { width: 600px; max-width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto; }
 
     html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
     header,.top-section,.destaques,.categories,.product-list { max-width: 100%; box-sizing: border-box; }
 
-    /* FAIXAS que grudam ao rolar */
-.destaques{
+   .destaques{
       display:flex; gap:10px; padding:10px; background:#fff8e1;
-      position:sticky; top:0; /* gruda no topo */
-      z-index:40;
+      position:sticky; top:0; z-index:40;
     }
-.destaque-item{flex:1;background:#fff;border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-.destaque-item img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
-.destaque-item h3{font-size:14px;margin:5px 0;}
-.price{font-size:14px;color:#e53935;font-weight:bold;}
+   .destaque-item{flex:1;background:#fff;border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+   .destaque-item img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
+   .destaque-item h3{font-size:14px;margin:5px 0;}
+   .price{font-size:14px;color:#e53935;font-weight:bold;}
 
-.categories{
+   .categories{
       display:flex; gap:10px; padding:10px; background:#fff8e1; border-bottom:1px solid #eee;
-      position:sticky; top:var(--destaquesH); /* gruda logo abaixo dos destaques */
-      z-index:39;
+      position:sticky; top:var(--destaquesH); z-index:39;
     }
-.categories button{flex:1;}
+   .categories button{flex:1;}
 
-    /* LISTA DE PRODUTOS */
-.product-list{padding:10px; padding-bottom: 50px; position:relative; z-index:10;}
-.card-item{display:flex;align-items:center;background:#fff;border-radius:10px;padding:15px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-.card-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-right:15px;}
+   .product-list{padding:10px; padding-bottom: 50px; position:relative; z-index:10;}
+   .card-item{display:flex;align-items:center;background:#fff;border-radius:10px;padding:15px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+   .card-item img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-right:15px;}
 
-    /* Barra inferior */
     #bottomBar {
       position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #ddd;
       display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; font-weight: bold; z-index: 60;
     }
     #bottomTotal.valor{ color:#e53935; }
-.carrinho-aberto #bottomBar button { display: none; }
-.carrinho-aberto #bottomBar #bottomTotal { flex: 1; text-align: center; }
+   .carrinho-aberto #bottomBar button { display: none; }
+   .carrinho-aberto #bottomBar #bottomTotal { flex: 1; text-align: center; }
 
-.btn{padding:6px 10px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;font-size:19px;transition:transform 0.1s ease;}
-.btn:active{transform:scale(0.95);} 
-.btn.primary{background:#4caf50;color:#fff;} 
-.btn.secondary{background:#dda408;color:#000000;}
-.btn.danger{background:#ff5c5c;color:#fff;}
+   .btn{padding:6px 10px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;font-size:19px;transition:transform 0.1s ease;}
+   .btn:active{transform:scale(0.95);}
+   .btn.primary{background:#4caf50;color:#fff;}
+   .btn.secondary{background:#dda408;color:#000000;}
+   .btn.danger{background:#ff5c5c;color:#fff;}
 
     #pageCarrinho{display:none;padding:20px;}
-.cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fff;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
-.cart-item img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
+   .cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fff;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+   .cart-item img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
 
- /* Molhos: 5 colunas fixas, sem scroll */
-.molhos{
-   display:grid;
-   grid-template-columns: repeat(5, minmax(0, 1fr));
-   gap:6px;
-   margin:10px 0;
- }
-.molho-card{
-   background:#fff;
-   border-radius:8px;
-   padding:6px 4px;
-   text-align:center;
-   box-shadow:0 1px 4px rgba(0,0,0,0.1);
- }
-.molho-card img{
-   width:100%;
-   height:48px;
-   object-fit:cover;
-   border-radius:6px;
- }
-.molho-card strong{
-   display:block;
-   font-size:12px;
-   line-height:1.1;
-   margin-top:4px;
-   white-space:nowrap;
-   overflow:hidden;
-   text-overflow:ellipsis;
- }
-.molho-card p{
-   font-size:11px;
-   margin:3px 0;
-   white-space:nowrap;
-   overflow:hidden;
-   text-overflow:ellipsis;
- }
-.molho-card div{ font-size:11px; }
-.molho-card button{
-   font-size:11px;
-   padding:3px 6px;
-   border-radius:6px;
- }
- @media (max-width:360px){
- .molho-card img{ height:44px; }
- .molho-card strong{ font-size:11px; }
- .molho-card p,.molho-card div,.molho-card button{ font-size:10px; }
- }
+   .molhos{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap:6px;
+      margin:10px 0;
+    }
+   .molho-card{
+      background:#fff;
+      border-radius:8px;
+      padding:6px 4px;
+      text-align:center;
+      box-shadow:0 1px 4px rgba(0,0,0,0.1);
+    }
+   .molho-card img{
+      width:100%;
+      height:48px;
+      object-fit:cover;
+      border-radius:6px;
+    }
+   .molho-card strong{
+      display:block;
+      font-size:12px;
+      line-height:1.1;
+      margin-top:4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+   .molho-card p{
+      font-size:11px;
+      margin:3px 0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+   .molho-card div{ font-size:11px; }
+   .molho-card button{
+      font-size:11px;
+      padding:3px 6px;
+      border-radius:6px;
+    }
+    @media (max-width:360px){
+     .molho-card img{ height:44px; }
+     .molho-card strong{ font-size:11px; }
+     .molho-card p,.molho-card div,.molho-card button{ font-size:10px; }
+    }
 
     #modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:80;}
-.modal-content{background:#fff;padding:15px;border-radius:10px;width:300px;text-align:center;}
-.modal-content input,.modal-content select{width:100%;padding:6px;margin:4px 0;border:1px solid #ccc;border-radius:5px;font-size:13px;}
-.cupom{background:#f9f9f9;border:1px dashed #aaa;padding:10px;margin:10px 0;text-align:left;font-size:13px;}
-.cupom h4{margin:0 0 8px 0;text-align:center;}
+   .modal-content{background:#fff;padding:15px;border-radius:10px;width:300px;text-align:center;}
+   .modal-content input,.modal-content select{width:100%;padding:6px;margin:4px 0;border:1px solid #ccc;border-radius:5px;font-size:13px;}
+   .cupom{background:#f9f9f9;border:1px dashed #aaa;padding:10px;margin:10px 0;text-align:left;font-size:13px;}
+   .cupom h4{margin:0 0 8px 0;text-align:center;}
 
-    /* Toast */
     #toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#323232;color:#fff;padding:8px 14px;border-radius:6px;opacity:0;transition:.2s;z-index:9999;pointer-events:none;}
     #toast.show{opacity:.95;}
 
-    /* Header apenas na home (controlado pela classe no body) */
     #header { display: none; }
     body.is-home #header { display: flex; }
 
-    /* >>> Mascote que bate palma */
     #mascote{
       position:fixed;
       right:16px; bottom:80px;
@@ -160,7 +149,6 @@
     }
   </style>
 </head>
-<!-- começa como home por padrão -->
 <body class="is-home">
 
 <header id="header">
@@ -168,10 +156,8 @@
 </header>
 
 <div id="toast">item adicionado</div>
-<!-- >>> Mascote -->
 <div id="mascote" aria-hidden="true"><span class="hands">👏</span></div>
 
-<!-- Destaques (gruda no topo ao rolar) -->
 <div class="destaques" id="destaques">
   <div class="destaque-item">
     <img src="img/coxinha.jpg" alt="Combo 25 Coxinhas">
@@ -193,14 +179,12 @@
   </div>
 </div>
 
-<!-- Categorias (gruda logo abaixo dos destaques) -->
 <div class="categories" id="categories">
   <button class="btn secondary" onclick="filtrarCategoria('combos')">Combos</button>
   <button class="btn secondary" onclick="filtrarCategoria('bebidas')">Refrigerantes</button>
   <button class="btn secondary" onclick="filtrarCategoria('promoções')">promoções</button>
 </div>
 
-<!-- Conteúdo que rola por baixo -->
 <div class="page-wrap">
   <div id="pageProdutos" class="product-list"></div>
 
@@ -234,11 +218,11 @@
       </div>
 
       <div class="molho-card">
-        <img src="img/alho.jpg" alt="Molho de Alho">
-        <strong>Molho de Alho</strong>
+        <img src="img/tartaro.jpg" alt="Molho Tártaro">
+        <strong>Molho Tártaro</strong>
         <p>Tradicional</p>
         <div>R$ 5,00</div>
-        <button class="btn primary" onclick="addMolho('Molho de Alho')">Adicionar</button>
+        <button class="btn primary" onclick="addMolho('Molho Tártaro')">Adicionar</button>
       </div>
 
       <div class="molho-card">
@@ -251,10 +235,10 @@
     </div>
 
     <div id="cart"></div>
-    <button class="btn primary" onclick="abrirModal()">Confirmar Pedio</button>
+    <button class="btn primary" onclick="abrirModal()">Confirmar Pedido</button>
   </div>
 </div>
- 
+
 <button style="visibility:hidden; margin-bottom:20px;">Botão 1</button>
 <button style="visibility:hidden; margin-bottom:20px;">Botão 2</button>
 <button style="visibility:hidden; margin-bottom:20px;">Botão 3</button>
@@ -296,12 +280,27 @@
   let cart = [];
   let categoriaAtual = 'combos';
 
+  /* ===== Persistência do carrinho ===== */
+  const CART_KEY = 'ss_cart_v1';
+  function saveCart(){
+    try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch(e){}
+  }
+  function loadCart(){
+    try {
+      const raw = localStorage.getItem(CART_KEY);
+      cart = raw? JSON.parse(raw) : [];
+    } catch(e){ cart = []; }
+  }
+  function clearCartStorage(){
+    try { localStorage.removeItem(CART_KEY); } catch(e){}
+  }
+  /* ==================================== */
+
   const PRODUCTS = {
     combos: [
-      { id:'c1', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 risoles + 50 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
-      { id:'c2', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 risoles + 50 kibes + Convenção 2L', img:'img/coxinha.jpg' },
-      { id:'c3', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 bolinhas + 50 risoles + Convenção 2L', img:'img/coxinha.jpg' },
-      { id:'c4', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 risoles + 25 bolinhas + 50 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c23', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
+      { id:'c24', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/coxinha.jpg' },
+      { id:'c25', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/coxinha.jpg' },
       { id:'c5', title:'Combo 40 (20+20)', price:46.69, desc:'20 coxinhas + 20 risoles + Convenção 2L', img:'img/coxinha.jpg' },
       { id:'c6', title:'Combo 40 (20+20)', price:46.69, desc:'20 coxinhas + 20 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
       { id:'c7', title:'Combo 40 (20+20)', price:46.69, desc:'20 coxinhas + 20 kibes + Convenção 2L', img:'img/coxinha.jpg' },
@@ -320,9 +319,10 @@
       { id:'c20', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 kibes + 15 coxinhas + 15 risoles + Convenção 2L', img:'img/coxinha.jpg' },
       { id:'c21', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 kibes + 15 coxinhas + 15 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
       { id:'c22', title:'Combo 60 (25+15+15)', price:66.29, desc:'25 kibes + 15 risoles + 15 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
-      { id:'c23', title:'Combo 25 Coxinhas', price:27.30, desc:'25 coxinhas + refri lata', img:'img/coxinha.jpg' },
-      { id:'c24', title:'Combo 25 Kibes', price:27.30, desc:'25 kibes + refri lata', img:'img/coxinha.jpg' },
-      { id:'c25', title:'Combo 25 Risoles', price:27.30, desc:'25 risoles + refri lata', img:'img/coxinha.jpg' },
+      { id:'c1', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 risoles + 50 bolinhas + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c2', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 risoles + 50 kibes + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c3', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 coxinhas + 25 bolinhas + 50 risoles + Convenção 2L', img:'img/coxinha.jpg' },
+      { id:'c4', title:'Combo 100 (25+25+50)', price:105.49, desc:'25 risoles + 25 bolinhas + 50 kibes + Convenção 2L', img:'img/coxinha.jpg' },
     ],
     bebidas: [
       { id:'b1', title:'Pepsi Lata 350ml', price:7.00, desc:'Pepsi gelada 350ml', img:'img/pepsi-lata.jpg' },
@@ -349,13 +349,12 @@
     ],
   };
 
-  // Catálogo de molhos (foto, descrição e preço)
   const SAUCES = {
     'Molho Barbecue': { img: 'img/barbecue.jpg', desc: 'Defumado', price: 5.00 },
     'Molho Mostarda': { img: 'img/mostarda.jpg', desc: 'Cremoso', price: 5.00 },
     'Molho Cheddar': { img: 'img/cheddar.jpg', desc: 'Cremoso', price: 5.00 },
-    'Molho de Alho': { img: 'img/alho.jpg', desc: 'Tradicional', price: 5.00 },
-    'Ketchup': { img: 'img/ketchup.jpg', desc: 'Tradicional', price: 5.00 },
+    'Molho Tártaro': { img: 'img/tartaro.jpg', desc: 'Tradicional', price: 5.00 },
+    'Ketchup': { img: 'img/ketchup.jpg', desc: 'Tradicional', price: 5.00 }
   };
 
   function filtrarCategoria(cat){categoriaAtual=cat;renderProdutos();}
@@ -382,10 +381,10 @@
 
   function abrirCarrinho() {
     document.body.classList.add('carrinho-aberto');
-    document.body.classList.remove('is-home'); // remove is-home -> esconde header
+    document.body.classList.remove('is-home');
     document.getElementById('pageCarrinho').style.display = 'block';
     document.getElementById('pageProdutos').style.display = 'none';
-    document.getElementById('categories').style.display = 'none'; 
+    document.getElementById('categories').style.display = 'none';
     document.getElementById('destaques').style.display = 'none';
     renderCart();
     updateOffsets();
@@ -398,11 +397,11 @@
 
   function voltarProdutos() {
     document.getElementById('pageProdutos').style.display = 'block';
-    document.getElementById('categories').style.display = 'flex'; 
+    document.getElementById('categories').style.display = 'flex';
     document.getElementById('destaques').style.display = 'flex';
     document.getElementById('pageCarrinho').style.display = 'none';
     document.body.classList.remove('carrinho-aberto');
-    document.body.classList.add('is-home'); // volta a ser home -> mostra header
+    document.body.classList.add('is-home');
     updateOffsets();
   }
 
@@ -415,8 +414,9 @@
     else cart.push({id:p.id,title:p.title,price:p.price,qty:1,desc:p.desc,img:p.img});
     updateBottomBar();
     renderCart();
+    saveCart();
     showToast('item adicionado');
-    showMascote(); // >>> anima o bonequinho
+    showMascote();
   }
 
   function addMolho(nome){
@@ -430,8 +430,9 @@
     }
     updateBottomBar();
     renderCart();
+    saveCart();
     showToast('item adicionado');
-    showMascote(); // >>> anima o bonequinho
+    showMascote();
   }
 
   function renderCart(){
@@ -455,8 +456,8 @@
     });
   }
 
-  function increaseQty(idx){ cart[idx].qty++; renderCart(); updateBottomBar(); }
-  function decreaseQty(idx){ if(cart[idx].qty>1){cart[idx].qty--;} else {cart.splice(idx,1);} renderCart(); updateBottomBar(); }
+  function increaseQty(idx){ cart[idx].qty++; renderCart(); updateBottomBar(); saveCart(); }
+  function decreaseQty(idx){ if(cart[idx].qty>1){cart[idx].qty--;} else {cart.splice(idx,1);} renderCart(); updateBottomBar(); saveCart(); }
 
   function updateBottomBar(){
     const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
@@ -470,13 +471,11 @@
     setTimeout(()=>t.classList.remove('show'),1200);
   }
 
-  // >>> Mostra o mascote batendo palma
   let mascoteTimer = null;
   function showMascote(){
     const m = document.getElementById('mascote');
     if(!m) return;
     m.classList.remove('show','clap');
-    // força reflow pra reiniciar animação
     void m.offsetWidth;
     m.classList.add('show','clap');
     clearTimeout(mascoteTimer);
@@ -539,14 +538,15 @@
     const url = `https://wa.me/5511932198727?text=${mensagem}`;
 
     window.open(url, '_blank');
+
     cart = [];
+    clearCartStorage();
     updateBottomBar();
     renderCart();
     voltarProdutos();
     fecharModal();
   }
 
-  /* Offsets: calcula a altura real das barras para os "top" do sticky */
   function updateOffsets(){
     const hH = document.getElementById('header')?.offsetHeight || 0;
     const hD = document.getElementById('destaques')?.offsetHeight || 0;
@@ -558,7 +558,10 @@
   window.addEventListener('resize', updateOffsets);
 
   document.addEventListener("DOMContentLoaded", () => {
+    loadCart();
     renderProdutos();
+    renderCart();
+    updateBottomBar();
     requestAnimationFrame(updateOffsets);
     setTimeout(updateOffsets, 200);
   });
