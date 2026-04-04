@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sacola — Super Salgados</title>
+  <style>
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff8e1;color:#333;padding:16px;}
+    h1{margin:0 0 12px;font-size:22px}
+   .btn{padding:8px 12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px}
+   .btn.primary{background:#4caf50;color:#fff}
+   .btn.secondary{background:#dda408;color:#000}
+   .btn.danger{background:#ff5c5c;color:#fff}
+   .btn.ghost{background:#eee;color:#333}
+   .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+   .cart-item{display:flex;align-items:center;gap:10px;padding:8px;background:#fff;border-radius:8px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+   .cart-item img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
+   .molhos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:10px 0}
+   .molho-card{background:#fff;border-radius:8px;padding:6px 4px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+   .molho-card img{width:100%;height:48px;object-fit:cover;border-radius:6px}
+   .molho-card strong{display:block;font-size:12px;line-height:1.1;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+   .molho-card p{font-size:11px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+   .molho-card div{font-size:11px}
+   .molho-card button{font-size:11px;padding:3px 6px;border-radius:6px}
+   .totais{background:#fff;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.08);padding:12px;margin-top:12px}
+    #modalEndereco{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:80;}
+   .modal-content{background:#fff;padding:15px;border-radius:10px;width:320px;max-width:92vw;text-align:center;}
+   .modal-content input,.modal-content select{width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:8px;font-size:14px;}
+   .cupom{background:#f9f9f9;border:1px dashed #aaa;padding:10px;margin:10px 0;text-align:left;font-size:13px;}
+   .cupom h4{margin:0 0 8px 0;text-align:center;}
+   .empty{opacity:.7;padding:16px;text-align:center;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    a{color:inherit}
+  </style>
+</head>
+<body>
+  <h1>Sua sacola</h1>
+  <div class="toolbar">
+    <button class="btn ghost" onclick="location.href='index.html'">← Voltar ao cardápio</button>
+   
+    <div style="margin-left:auto"></div>
+    <button class="btn danger" onclick="limparSacola()">Esvaziar sacola</button>
+  </div>
+
+  <h3>Molhos</h3>
+  <div class="molhos" id="molhos"></div>
+
+  <div id="cart"></div>
+
+  <div class="totais" id="totais"></div>
+
+  <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn primary" onclick="abrirModal()">Confirmar pedido</button>
+    <button class="btn secondary" onclick="location.href='index.html'">Continuar comprando</button>
+  </div>
+
+  <!-- Modal de endereço/checkout -->
+  <div id="modalEndereco">
+    <div class="modal-content">
+      <button class="btn secondary" onclick="fecharModal()">← Voltar para sacola</button>
+      <h3>Informe seus dados</h3>
+      <input type="text" id="nome" placeholder="Nome completo">
+      <input type="text" id="rua" placeholder="Rua">
+      <input type="text" id="numero" placeholder="Número da casa">
+      <input type="text" id="bairro" placeholder="Bairro">
+      <select id="pagamento">
+        <option value="">Forma de pagamento</option>
+        <option value="Débito">Cartão Débito</option>
+        <option value="Crédito">Cartão Crédito</option>
+        <option value="Dinheiro">Dinheiro</option>
+      </select>
+      <input type="text" id="troco" placeholder="Troco para quanto?" style="display:none;">
+      <div class="cupom" id="cupomResumo">
+        <h4>📜 Cupom do Pedido</h4>
+        <div id="cupomItens"></div>
+        <div id="cupomTotal"></div>
+      </div>
+      <button class="btn primary" onclick="enviarPedido()">Confirmar e Enviar</button>
+      <button class="btn danger" onclick="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+
+<script>
+  const TAXA = 4.00;
+  const CART_KEY = 'ss_cart_v1';
+  const PEDIDOS_KEY = 'pedidos_ss';
+
+  const SAUCES = {
+    'Molho Barbecue': { img: 'img/barbecue.jpg', desc: 'Defumado', price: 5.00 },
+    'Molho Mostarda': { img: 'img/mostarda.jpg', desc: 'Cremoso', price: 5.00 },
+    'Molho Cheddar': { img: 'img/cheddar.jpg', desc: 'Cremoso', price: 5.00 },
+    'Molho Tártaro': { img: 'img/tartaro.jpg', desc: 'Tradicional', price: 5.00 },
+    'Ketchup': { img: 'img/ketchup.jpg', desc: 'Tradicional', price: 5.00 }
+  };
+
+  function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch(e){ return []; } }
+  function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+
+  function money(v){ return 'R$ ' + Number(v).toFixed(2).replace('.', ','); }
+
+  function renderMolhos(){
+    const wrap = document.getElementById('molhos');
+    wrap.innerHTML = Object.entries(SAUCES).map(([nome,s])=>`
+      <div class="molho-card">
+        <img src="${s.img}" alt="${nome}">
+        <strong>${nome}</strong>
+        <p>${s.desc}</p>
+        <div>${money(s.price)}</div>
+        <button class="btn primary" onclick="addMolho('${nome}')">Adicionar</button>
+      </div>
+    `).join('');
+  }
+
+  function renderCart(){
+    const cart = getCart();
+    const cartEl = document.getElementById('cart');
+    if(!cart.length){
+      cartEl.innerHTML = '<div class="empty">Sua sacola está vazia. Volte ao cardápio e adicione itens.</div>';
+    }else{
+      cartEl.innerHTML = cart.map((item,idx)=>`
+        <div class="cart-item">
+          <img src="${item.img}" alt="${item.title}">
+          <div style="flex:1;">
+            <strong>${item.title}</strong><br>
+            <small>${item.desc || ''}</small><br>
+            <span>Qtd: ${item.qty} | ${money(item.price*item.qty)}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <button class="btn secondary" onclick="increaseQty(${idx})">+</button>
+            <button class="btn secondary" onclick="decreaseQty(${idx})">-</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderTotais();
+  }
+
+  function renderTotais(){
+    const cart = getCart();
+    const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
+    const total = subtotal + TAXA;
+    document.getElementById('totais').innerHTML = `
+      <div style="display:flex;justify-content:space-between"><div>Subtotal</div><div>${money(subtotal)}</div></div>
+      <div style="display:flex;justify-content:space-between;opacity:.8"><div>Taxa de entrega</div><div>${money(TAXA)}</div></div>
+      <div style="display:flex;justify-content:space-between;border-top:1px solid #eee;margin-top:6px;padding-top:6px;font-weight:bold"><div>Total</div><div>${money(total)}</div></div>
+    `;
+  }
+
+  function increaseQty(idx){ const c=getCart(); c[idx].qty++; setCart(c); renderCart(); }
+  function decreaseQty(idx){ const c=getCart(); if(c[idx].qty>1){ c[idx].qty--; } else { c.splice(idx,1); } setCart(c); renderCart(); }
+  function limparSacola(){ if(confirm('Esvaziar a sacola?')){ localStorage.removeItem(CART_KEY); renderCart(); } }
+
+  function addMolho(nome){
+    const s = SAUCES[nome]; if(!s) return;
+    const id = 'molho:' + nome;
+    const c = getCart();
+    const ex = c.find(i=>i.id===id);
+    if(ex){ ex.qty++; } else { c.push({ id, title:nome, price:s.price, qty:1, desc:s.desc, img:s.img }); }
+    setCart(c); renderCart();
+  }
+
+  // Modal
+  function abrirModal(){
+    if(getCart().length===0){ alert('Sacola vazia'); return; }
+    document.getElementById('modalEndereco').style.display='flex';
+    renderCupom();
+  }
+  function fecharModal(){ document.getElementById('modalEndereco').style.display='none'; }
+  document.getElementById('pagamento').addEventListener('change', function(){
+    document.getElementById('troco').style.display = (this.value === 'Dinheiro')? 'block' : 'none';
+  });
+
+  function renderCupom(){
+    const cart = getCart();
+    const cupomItens = document.getElementById('cupomItens');
+    const cupomTotal = document.getElementById('cupomTotal');
+    cupomItens.innerHTML = cart.map(i => `${i.title} x${i.qty} - ${money(i.price*i.qty)}`).join('<br>');
+    const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
+    const total = subtotal + TAXA;
+    cupomTotal.innerHTML = `Subtotal: ${money(subtotal)}<br>Taxa de entrega: ${money(TAXA)}<br><strong>Total: ${money(total)}</strong>`;
+  }
+
+  function enviarPedido(){
+    const nome = document.getElementById('nome').value.trim();
+    const rua = document.getElementById('rua').value.trim();
+    const numero = document.getElementById('numero').value.trim();
+    const bairro = document.getElementById('bairro').value.trim();
+    const pagamento = document.getElementById('pagamento').value;
+    const troco = document.getElementById('troco').value.trim();
+
+    if (!nome ||!rua ||!numero ||!bairro ||!pagamento) {
+      alert('Preencha todos os campos obrigatórios');
+      return;
+    }
+
+    const cart = getCart();
+    const subtotal = cart.reduce((s,i)=> s + i.price*i.qty, 0);
+    const total = subtotal + TAXA;
+
+    // Salvar pedido para o admin
+    const pedido = {
+      id: Date.now(),
+      data: new Date().toLocaleString('pt-BR'),
+      cliente: { nome, rua, numero, bairro },
+      pagamento,
+      troco: pagamento === 'Dinheiro'? troco : '',
+      itens: cart.map(i => ({ qty:i.qty, title:i.title, price:i.price, desc:i.desc||'', img:i.img||'' })),
+      subtotal: subtotal.toFixed(2),
+      taxa: TAXA.toFixed(2),
+      total: total.toFixed(2),
+      status: 'novo'
+    };
+    const pedidos = JSON.parse(localStorage.getItem(PEDIDOS_KEY) || '[]');
+    pedidos.unshift(pedido);
+    localStorage.setItem(PEDIDOS_KEY, JSON.stringify(pedidos));
+
+    // WhatsApp
+    const itens = cart.map(i => `*${i.title} x${i.qty}* - ${money(i.price*i.qty)}`).join('%0A');
+    let pagamentoInfo = `Forma de pagamento: ${pagamento}`;
+    if (pagamento === 'Dinheiro' && troco) pagamentoInfo += `%0ATroco para: ${troco}`;
+    const endereco = `Nome: ${nome}%0ARua: ${rua}, Nº: ${numero}%0ABairro: ${bairro}`;
+    const mensagem = `Olá! Gostaria de fazer o seguinte pedido:%0A${itens}%0A%0ASubtotal: ${money(subtotal)}%0ATaxa de entrega: ${money(TAXA)}%0A*Total: ${money(total)}*%0A%0A${endereco}%0A${pagamentoInfo}`;
+    const url = `https://wa.me/5511932198727?text=${mensagem}`;
+    window.open(url, '_blank');
+
+    // limpar e voltar ao cardápio
+    localStorage.removeItem(CART_KEY);
+    fecharModal();
+    location.href = 'index.html';
+  }
+
+  // Inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMolhos();
+    renderCart();
+  });
+</script>
+</body>
+</html>

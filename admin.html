@@ -1,0 +1,324 @@
+
+
+Pergunte o que quiser…
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3333">
+  <title>Admin - Super Salgados (Pedidos)</title>
+  <style>
+    :root{ --bg:#fff8e1; --card:#ffffff; --muted:#777; --ok:#4caf50; --warn:#c79506; --danger:#ff5c5c; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#333;font-size:15px}
+    .center{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px}
+    .login{width:100%;max-width:360px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.1);padding:18px}
+    .login h1{margin:0 0 12px;font-size:20px}
+    .login input{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;margin:6px 0;font-size:14px}
+    .err{color:#c62828;font-size:13px;min-height:18px;margin-top:4px}
+    header{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:14px 16px}
+    h2{margin:0;font-size:22px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 16px 12px}
+    .btn{padding:10px 12px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;transition:transform .08s}
+    .btn:focus-visible{outline:3px solid #000; outline-offset:2px}
+    .btn:active{transform:scale(.97)}
+    .btn.primary{background:var(--ok);color:#fff}
+    .btn.secondary{background:var(--warn);color:#000}
+    .btn.danger{background:var(--danger);color:#fff}
+    .btn.ghost{background:#eee;color:#333}
+    input[type="text"], input[type="password"], select{padding:10px;border:1px solid #ccc;border-radius:10px;font-size:14px;background:#fff}
+    select{appearance:none}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;padding:0 16px 16px}
+    @media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+    @media(min-width:1200px){.grid{grid-template-columns:1fr 1fr 1fr}}
+    .card{background:var(--card);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:12px}
+    .row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+    .muted{color:var(--muted)}
+    .pill{padding:3px 10px;border-radius:999px;background:#eee;font-size:12px;display:inline-block;text-transform:capitalize}
+    .status-novo{background:#ffe08a}
+    .status-em-preparo{background:#a0e3ff}
+    .status-pronto{background:#b7f7c2}
+    .itens{background:#fafafa;border:1px dashed #ddd;border-radius:10px;padding:8px;margin-top:8px;max-height:260px;overflow:auto}
+    .item{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:4px 0}
+    .tot{display:flex;justify-content:space-between;border-top:1px solid #eee;margin-top:6px;padding-top:6px;font-weight:bold}
+    .empty{opacity:.7;padding:16px;text-align:center;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+    .hint{font-size:12px;color:#666;padding:0 16px 24px}
+    .right{margin-left:auto}
+    #app{display:none}
+    .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+  </style>
+</head>
+<body>
+  <div id="loginScreen" class="center" aria-hidden="false">
+    <form class="login" id="loginForm" autocomplete="on">
+      <h1>Entrar no Admin</h1>
+      <label class="sr-only" for="user">Usuário</label>
+      <input id="user" name="username" type="text" placeholder="Usuário" autocomplete="username" required>
+      <label class="sr-only" for="pass">Senha</label>
+      <input id="pass" name="password" type="password" placeholder="Senha" autocomplete="current-password" required>
+      <div id="err" class="err" role="alert" aria-live="assertive"></div>
+      <button class="btn primary" type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <main id="app" aria-hidden="true">
+    <header>
+      <h2>Pedidos — Super Salgados</h2>
+      <div class="right">
+        <input id="autoPrint" type="checkbox" checked>
+        <label for="autoPrint" style="margin-right:8px;">Imprimir automaticamente</label>
+        <button class="btn ghost" id="btnLogout" type="button">Sair</button>
+      </div>
+    </header>
+
+    <nav class="toolbar" aria-label="Ações e filtros">
+      <button class="btn ghost" id="btnMenu" type="button" title="Ir ao cardápio">← Cardápio</button>
+      <button class="btn danger" id="btnClear" type="button">Limpar tudo</button>
+      <button class="btn primary" id="btnExport" type="button">Exportar JSON</button>
+      <input id="importFile" type="file" accept="application/json" style="display:none">
+      <button class="btn secondary" id="btnImport" type="button">Importar JSON</button>
+      <label class="sr-only" for="busca">Buscar</label>
+      <input id="busca" type="text" placeholder="Buscar por nome, bairro, rua, item...">
+      <label class="sr-only" for="filtroStatus">Filtrar por status</label>
+      <select id="filtroStatus" title="Filtrar por status">
+        <option value="">Todos</option>
+        <option value="novo">Novo</option>
+        <option value="em-preparo">Em preparo</option>
+        <option value="pronto">Pronto</option>
+      </select>
+      <button class="btn ghost" id="btnReload" type="button">Recarregar</button>
+    </nav>
+
+    <section id="lista" class="grid" aria-live="polite"></section>
+    <p class="hint">Os pedidos ficam no <code>localStorage</code> (chave <code>pedidos_ss</code>). A impressão usa <code>window.api.invoke('print-receipt', ...)</code>.</p>
+  </main>
+
+<script>
+  const AUTH_KEY = 'ss_admin_auth';
+  const USER = 'jeferson';
+  const PASS = 'blue1990';
+
+  const elLoginScreen = document.getElementById('loginScreen');
+  const elApp = document.getElementById('app');
+  const elForm = document.getElementById('loginForm');
+  const elErr = document.getElementById('err');
+
+  function isAuthed(){ return sessionStorage.getItem(AUTH_KEY) === '1'; }
+  function showApp(show){
+    elLoginScreen.style.display = show ? 'none' : 'flex';
+    elLoginScreen.setAttribute('aria-hidden', show ? 'true' : 'false');
+    elApp.style.display = show ? 'block' : 'none';
+    elApp.setAttribute('aria-hidden', show ? 'false' : 'true');
+    if (show) { render(); }
+  }
+  function doLogin(u, p){
+    if (u === USER && p === PASS){
+      sessionStorage.setItem(AUTH_KEY, '1');
+      elErr.textContent = '';
+      showApp(true);
+    } else {
+      elErr.textContent = 'Usuário ou senha inválidos.';
+    }
+  }
+  function logout(){ sessionStorage.removeItem(AUTH_KEY); showApp(false); }
+
+  const KEY = 'pedidos_ss';
+  const money = (v) => Number(v||0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const normalizeStatus = (s) => (s||'novo').toLowerCase().replace(/\s+/g,'-');
+
+  function getPedidos(){
+    try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return []; }
+  }
+  function setPedidos(arr){ localStorage.setItem(KEY, JSON.stringify(arr)); }
+
+  const els = {
+    autoPrint: document.getElementById('autoPrint'),
+    busca: document.getElementById('busca'),
+    filtro: document.getElementById('filtroStatus'),
+    lista: document.getElementById('lista'),
+    btnLogout: document.getElementById('btnLogout'),
+    btnMenu: document.getElementById('btnMenu'),
+    btnClear: document.getElementById('btnClear'),
+    btnExport: document.getElementById('btnExport'),
+    btnImport: document.getElementById('btnImport'),
+    importFile: document.getElementById('importFile'),
+    btnReload: document.getElementById('btnReload'),
+  };
+
+  const debounce = (fn, wait=150) => { let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), wait); }; };
+
+  function render(){
+    const wrap = els.lista;
+    const q = (els.busca.value || '').toLowerCase().trim();
+    const f = normalizeStatus(els.filtro.value);
+    let pedidos = getPedidos().map(p => ({...p, status: normalizeStatus(p.status)}));
+    if (f) pedidos = pedidos.filter(p => (p.status||'novo') === f);
+    if (q){
+      pedidos = pedidos.filter(p => {
+        const base = [
+          p.cliente?.nome, p.cliente?.bairro, p.cliente?.rua, p.cliente?.numero,
+          p.pagamento, p.troco, p.data,
+          ...(p.itens||[]).map(i => (i.title||'') + ' ' + (i.desc||''))
+        ].join(' ').toLowerCase();
+        return base.includes(q);
+      });
+    }
+    if (!pedidos.length){
+      wrap.innerHTML = '<div class="empty">Nenhum pedido encontrado.</div>';
+      return;
+    }
+    wrap.innerHTML = pedidos.map(p => {
+      const status = normalizeStatus(p.status||'novo');
+      const label = status.replace('-', ' ');
+      return `
+      <article class="card" data-id="${p.id}">
+        <div class="row">
+          <div>
+            <strong>#${p.id}</strong> • <span class="muted">${p.data||''}</span>
+            &nbsp;<span class="pill status-${status}">${label}</span>
+          </div>
+          <div class="row" style="gap:6px">
+            <button class="btn ghost" data-action="print" data-id="${p.id}" type="button">Imprimir</button>
+            <button class="btn secondary" data-action="status" data-id="${p.id}" data-st="em-preparo" type="button">Em preparo</button>
+            <button class="btn primary" data-action="status" data-id="${p.id}" data-st="pronto" type="button">Pronto</button>
+            <button class="btn danger" data-action="remove" data-id="${p.id}" type="button">Excluir</button>
+          </div>
+        </div>
+        <div style="margin:8px 0 4px; line-height:1.35;">
+          <div><strong>Cliente:</strong> ${p.cliente?.nome || '-'}</div>
+          <div class="muted"><strong>Endereço:</strong> ${p.cliente?.rua || '-'}, Nº ${p.cliente?.numero || '-'} - ${p.cliente?.bairro || '-'}</div>
+          <div class="muted"><strong>Pagamento:</strong> ${p.pagamento || '-'} ${p.pagamento==='Dinheiro' && p.troco? `(Troco p/ ${money(p.troco)})` : ''}</div>
+        </div>
+        <div class="itens">
+          ${(p.itens||[]).map(i => `
+            <div class="item">
+              <div>${i.qty}x ${i.title} ${i.desc? `<span class="muted">(${i.desc})</span>`:''}</div>
+              <div>${money((Number(i.price)||0) * (Number(i.qty)||0))}</div>
+            </div>
+          `).join('')}
+          <div class="item muted"><div>Subtotal</div><div>${money(p.subtotal)}</div></div>
+          <div class="item muted"><div>Taxa</div><div>${money(p.taxa)}</div></div>
+          <div class="tot"><div>Total</div><div>${money(p.total)}</div></div>
+        </div>
+      </article>
+      `;
+    }).join('');
+  }
+
+  function setStatus(id, st){
+    const arr = getPedidos().map(p => ({...p, status: normalizeStatus(p.status)}));
+    const i = arr.findIndex(p => String(p.id) === String(id));
+    if (i >= 0){ arr[i].status = normalizeStatus(st); setPedidos(arr); render(); }
+  }
+  function remover(id){
+    if (!confirm('Excluir este pedido?')) return;
+    setPedidos(getPedidos().filter(p => String(p.id)!== String(id))); render();
+  }
+  function limparTudo(){
+    if (!confirm('Apagar TODOS os pedidos?')) return;
+    localStorage.removeItem(KEY); render();
+  }
+  function exportar(){
+    const data = localStorage.getItem(KEY) || '[]';
+    const blob = new Blob([data], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'pedidos_supersalgados.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  function importar(file){
+    const r = new FileReader();
+    r.onload = () => {
+      try{
+        const arr = JSON.parse(r.result);
+        if (!Array.isArray(arr)) throw new Error('formato inválido');
+        const ok = arr.every(p => p && typeof p.id!=='undefined' && Array.isArray(p.itens));
+        if (!ok) throw new Error('itens ausentes');
+        const norm = arr.map(p => ({...p, status: normalizeStatus(p.status)}));
+        setPedidos(norm); render(); alert('Importado com sucesso!');
+      }catch(e){ alert('Arquivo inválido.'); }
+    };
+    r.readAsText(file);
+  }
+
+  async function printOrder(id){
+    const p = getPedidos().find(x=> String(x.id) === String(id));
+    if(!p){ alert('Pedido não encontrado.'); return; }
+    try{
+      const res = await window.api.invoke('print-receipt', p);
+      if (!res?.ok) throw new Error(res?.results?.[0]?.error || 'Falha');
+    }catch(e){
+      console.error(e);
+      alert('Falha ao imprimir: ' + (e.message||e));
+    }
+  }
+
+  let lastSeenId = null;
+  window.addEventListener('storage', async (e) => {
+    if (e.key !== KEY) return;
+    render();
+    const auto = (localStorage.getItem('ss_autoprint') ?? '1') === '1';
+    const pedidos = getPedidos();
+    if (!auto || !pedidos.length) return;
+    const newest = pedidos[0];
+    if (newest && String(newest.id) !== String(lastSeenId)){
+      lastSeenId = newest.id;
+      try{ await printOrder(newest.id); }catch(_){}
+    }
+  });
+
+  document.addEventListener('click', (ev)=>{
+    const btn = ev.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = btn.getAttribute('data-id');
+    const action = btn.getAttribute('data-action');
+    if (action === 'print') printOrder(id);
+    if (action === 'status') setStatus(id, btn.getAttribute('data-st'));
+    if (action === 'remove') remover(id);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    elForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const u = document.getElementById('user').value.trim();
+      const p = document.getElementById('pass').value;
+      doLogin(u,p);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !isAuthed()) {
+        const active = document.activeElement;
+        if (active && (active.id === 'user' || active.id === 'pass')) {
+          e.preventDefault();
+          elForm.requestSubmit();
+        }
+      }
+    });
+
+    showApp(isAuthed());
+
+    const ap = localStorage.getItem('ss_autoprint');
+    els.autoPrint.checked = (ap === null ? true : ap === '1');
+    els.autoPrint.addEventListener('change', (e)=>{
+      localStorage.setItem('ss_autoprint', e.target.checked ? '1' : '0');
+    });
+
+    els.btnLogout.addEventListener('click', logout);
+    els.btnMenu.addEventListener('click', ()=>{ location.href='index.html'; });
+    els.btnClear.addEventListener('click', limparTudo);
+    els.btnExport.addEventListener('click', exportar);
+    els.btnImport.addEventListener('click', ()=> els.importFile.click());
+    els.importFile.addEventListener('change', (ev)=>{ const f = ev.target.files[0]; if (f) importar(f); ev.target.value=''; });
+    els.btnReload.addEventListener('click', ()=> render());
+
+    els.busca.addEventListener('input', debounce(()=> render(), 150));
+    els.filtro.addEventListener('change', ()=> render());
+
+    const pedidos = getPedidos();
+    if (pedidos.length) lastSeenId = pedidos[0].id;
+  });
+</script>
+</body>
+</html>
